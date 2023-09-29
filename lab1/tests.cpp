@@ -1,45 +1,59 @@
-#include "eub.h"
+#include "./header/eub.h"
 
 #include <gtest/gtest.h>
 
 TEST(test_01, basic_test_set)
 {
-    ASSERT_TRUE(eliminateUnsetBits("11101")==15);
+    std::string test = "11101";
+    ASSERT_TRUE(eliminateUnsetBits(test)==15);
 }
 
 TEST(test_02, big_empty_enter)
 {
-    ASSERT_TRUE(eliminateUnsetBits("   ")==-1);
+    std::string test = "   ";
+    ASSERT_TRUE(eliminateUnsetBits(test)==-1);
 }
 
 TEST(test_03, many_zero_some_one)
 {
-    ASSERT_TRUE(eliminateUnsetBits("10000001")==3);
+    std::string test = "10000001";
+    ASSERT_TRUE(eliminateUnsetBits(test)==3);
 }
 
 TEST(test_04, basic_test_out_of_bounds)
 {
-    ASSERT_TRUE(eliminateUnsetBits("1010101011101001010101010")==-1);
+    std::string test = "111111111111111111111111111111111";
+    ASSERT_TRUE(eliminateUnsetBits(test)==-1);
 }
 
 TEST(test_05, zero_enter)
 {
-    ASSERT_TRUE(eliminateUnsetBits("000")==0);
+    std::string test = "000";
+    ASSERT_TRUE(eliminateUnsetBits(test)==0);
 }
 
 TEST(test_06, one_enter)
 {
-    ASSERT_TRUE(eliminateUnsetBits("1")==1);
+    std::string test = "1";
+    ASSERT_TRUE(eliminateUnsetBits(test)==1);
 }
 
 TEST(test_07, zero_start_to_number)
 {
-    ASSERT_TRUE(eliminateUnsetBits("000000000000111")==7);
+    std::string test = "000000000000111";
+    ASSERT_TRUE(eliminateUnsetBits(test)==7);
 }
 
 TEST(test_08, null_enter)
 {
-    ASSERT_TRUE(eliminateUnsetBits("")==-1);
+    std::string test = "";
+    ASSERT_TRUE(eliminateUnsetBits(test)==-1);
+}
+
+TEST(test_09, max_number_before_out_of_bounds)
+{
+    std::string test = "11111111111111111111111111111111";
+    ASSERT_TRUE(eliminateUnsetBits(test)==4294967295);
 }
 
 int main(int argc, char **argv) {
