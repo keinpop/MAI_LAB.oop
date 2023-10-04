@@ -69,14 +69,14 @@ TEST(test_07, small_arithmetic_minus_test)
     ASSERT_TRUE((s1 - s2) == s3);
 }
 
-// TEST(test_08, abs_arithmetic_minus_test)
-// {
-//     Seven s1{'1', '3', '4'};
-//     Seven s2{'6', '1', '2', '1', '1', '0'};
-//     Seven s3{'6', '1', '0', '4', '4', '3'};
+TEST(test_08, zero_arithmetic_minus_test)
+{
+    Seven s1{'1', '3', '4'};
+    Seven s2{'6', '1', '2', '1', '1', '0'};
+    Seven s3{'0'};
 
-//     EXPECT_FALSE((s1 - s2) == s3);
-// }
+    EXPECT_FALSE((s1 - s2) == s3);
+}
 
 TEST(test_09, boolean_operator_equal_test)
 {

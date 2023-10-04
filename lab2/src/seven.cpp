@@ -256,7 +256,8 @@ Seven Seven::operator+(const Seven & other) const
 Seven Seven::operator-(const Seven & other) const
 {
     if (*(this) < other) { // abs
-        throw std::range_error("operator-: the subtracted value is greater");
+        Seven res(1, '0');
+        return res;
     }
 
     int i = 0;
