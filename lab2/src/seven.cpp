@@ -16,6 +16,11 @@ Seven::Seven(const size_t & n, unsigned char elem)
     } else {
         throw std::range_error("Fille constructor: Invalid symbol");
     }
+
+    while (_array[_size - 1] == '0' && _size > 1) {
+        this->resizeArrayMinus();
+        --_size;
+    }
 }
 
 Seven::Seven(const std::initializer_list<unsigned char> & str)
@@ -32,6 +37,11 @@ Seven::Seven(const std::initializer_list<unsigned char> & str)
             throw std::range_error("Initializer list: Invalid symbol");
         }
     }
+
+    while (_array[_size - 1] == '0' && _size > 1) {
+        this->resizeArrayMinus();
+        --_size;
+    }
 }
 
 Seven::Seven(const Seven &other)
@@ -40,6 +50,11 @@ Seven::Seven(const Seven &other)
     this->_array = new unsigned char[_size];
     
     memcpy(this->_array, other._array, this->_size * sizeof(unsigned char));
+
+    while (_array[_size - 1] == '0' && _size > 1) {
+        this->resizeArrayMinus();
+        --_size;
+    }
 }
 
 Seven::Seven(const std::string & other)
@@ -54,7 +69,12 @@ Seven::Seven(const std::string & other)
         } else {
             throw std::range_error("Base contructor: Invalid symbol");
         }
-    } 
+    }
+
+    while (_array[_size - 1] == '0' && _size > 1) {
+        this->resizeArrayMinus();
+        --_size;
+    }
 }
 
 Seven::Seven(Seven&& other) noexcept
@@ -62,6 +82,11 @@ Seven::Seven(Seven&& other) noexcept
     std::cout << "Move constructor" << std::endl;
     std::swap(_size, other._size);
     std::swap(_array, other._array);
+
+    while (_array[_size - 1] == '0' && _size > 1) {
+        this->resizeArrayMinus();
+        --_size;
+    }
 }
 
 Seven::~Seven() noexcept

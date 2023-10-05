@@ -11,7 +11,7 @@ add_executable(lab2 main.cpp src/seven.cpp)
 
 enable_testing()
 
-add_executable(tests tests.cpp src/seven.cpp)
+add_executable(tests test/tests.cpp src/seven.cpp)
 target_link_libraries(tests ${GTEST_LIBRARIES})
 
 add_test(NAME BASIC COMMAND tests)
