@@ -7,18 +7,36 @@ bool constructorTest()
     Seven s1 {'1', '2', '3'};
     std::string test = "123";
     Seven s2(test);
-    Seven s3 {'3', '6', '1'};
-    Seven s4(s3);
+    Seven s3 {'3', '6', '1'}, s4(s3);
+    Seven s5{'0', '0', '0'}, s6("000");
 
-    return (s1 == s2) && (s3 == s4);
+    return (s1 == s2) && (s3 == s4) && (s5 == s6);
 }
 
-TEST(test_01, constructorTest)
+TEST(test_00, constructorTest)
 {
     EXPECT_TRUE(constructorTest());
 }
 
-TEST(test_02, basic_arithmetic_plus_test)
+TEST(test_01, thorw_constructor_test)
+{
+    ASSERT_THROW(Seven s1("507"), std::range_error);
+}
+
+TEST(test_02, throw_constrctor_test)
+{
+    
+    ASSERT_THROW(Seven s1("f&k*"), std::range_error);
+}
+
+TEST(test_03, throw_constrctor_test)
+{
+    std::string test = "24 1";
+    
+    EXPECT_THROW(Seven s1(test), std::range_error);
+}
+
+TEST(test_10, basic_arithmetic_plus_test)
 {
     Seven s1 {'1', '2', '3'};
     Seven s2 {'2', '3', '5'};
@@ -27,7 +45,7 @@ TEST(test_02, basic_arithmetic_plus_test)
     ASSERT_TRUE((s1 + s2) == s3);
 }
 
-TEST(test_03, big_arithmetic_plus_test)
+TEST(test_11, big_arithmetic_plus_test)
 {
     Seven s1 {'6', '2', '3', '6', '2', '5', '1', '4'};
     Seven s2 {'2', '3', '5', '0', '0', '6'};
@@ -36,7 +54,7 @@ TEST(test_03, big_arithmetic_plus_test)
     ASSERT_TRUE((s1 + s2) == s3);
 }
 
-TEST(test_04, small_arithmetic_plus_test)
+TEST(test_12, small_arithmetic_plus_test)
 {
     Seven s1 {'6'};
     Seven s2 {'2', '3', '5'};
@@ -45,7 +63,16 @@ TEST(test_04, small_arithmetic_plus_test)
     ASSERT_TRUE((s1 + s2) == s3);
 }
 
-TEST(test_06, big_arithmetic_minus_test)
+TEST(test_13, zero_arithmetic_plus_test)
+{
+    Seven s1 {'0', '0', '0', '5'};
+    Seven s2 {'2', '3', '5'};
+    Seven s3("243");
+
+    ASSERT_TRUE((s1 + s2) == s3);
+}
+
+TEST(test_20, big_arithmetic_minus_test)
 {
     std::string a = "65412321";
     std::string b = "40021";
@@ -57,7 +84,7 @@ TEST(test_06, big_arithmetic_minus_test)
     ASSERT_TRUE((s1 - s2) == s3);
 }
 
-TEST(test_07, small_arithmetic_minus_test)
+TEST(test_21, small_arithmetic_minus_test)
 {
     std::string a = "62134";
     std::string b = "61210";
@@ -69,16 +96,24 @@ TEST(test_07, small_arithmetic_minus_test)
     ASSERT_TRUE((s1 - s2) == s3);
 }
 
-TEST(test_08, zero_arithmetic_minus_test)
+TEST(test_22, big_sub_arithmetic_minus_test)
 {
     Seven s1{'1', '3', '4'};
     Seven s2{'6', '1', '2', '1', '1', '0'};
-    Seven s3{'0'};
 
-    EXPECT_FALSE((s1 - s2) == s3);
+    EXPECT_THROW((s1 - s2), std::range_error);
 }
 
-TEST(test_09, boolean_operator_equal_test)
+TEST(test_23, big_sub_arithmetic_minus_test)
+{
+    Seven s1{'6', '6', '1', '0', '1', '6'};
+    Seven s2{'6', '1', '6', '1', '1', '0'};
+    Seven s3("41606");
+
+    ASSERT_TRUE((s1 - s2) == s3);
+}
+
+TEST(test_30, boolean_operator_equal_test)
 {
     Seven s1 {'1', '2', '3'};
     Seven s2 {'1', '2', '3'};
@@ -86,7 +121,7 @@ TEST(test_09, boolean_operator_equal_test)
     ASSERT_TRUE((s1 == s2) == true);
 }
 
-TEST(test_10, boolean_operator_not_equal_test)
+TEST(test_31, boolean_operator_not_equal_test)
 {
     Seven s1 {'1', '2', '3'};
     Seven s2 {'2', '2', '3'};
@@ -94,7 +129,7 @@ TEST(test_10, boolean_operator_not_equal_test)
     ASSERT_TRUE((s1 != s2) == true);
 }
 
-TEST(test_11, boolean_operator_more_test)
+TEST(test_32, boolean_operator_more_test)
 {
     Seven s1 {'3', '2', '3'};
     Seven s2 {'1', '2', '3'};
@@ -102,7 +137,7 @@ TEST(test_11, boolean_operator_more_test)
     ASSERT_TRUE((s1 > s2) == true);
 }
 
-TEST(test_12, boolean_operator_less_test)
+TEST(test_33, boolean_operator_less_test)
 {
     Seven s1 {'3', '2', '3'};
     Seven s2 {'1', '2', '3'};
@@ -110,7 +145,7 @@ TEST(test_12, boolean_operator_less_test)
     ASSERT_TRUE((s2 < s1) == true);
 }
 
-TEST(test_13, boolean_operator_more_equal_test)
+TEST(test_34, boolean_operator_more_equal_test)
 {
     Seven s1 {'3', '2', '3'};
     Seven s2 {'1', '2', '3'};
@@ -119,7 +154,7 @@ TEST(test_13, boolean_operator_more_equal_test)
     ASSERT_TRUE(((s1 >= s2) && (s2 >= s3)) == true);
 }
 
-TEST(test_14, boolean_operator_less_equal_test)
+TEST(test_35, boolean_operator_less_equal_test)
 {
     Seven s1 {'3', '2', '3'};
     Seven s2 {'1', '2', '3'};
@@ -128,7 +163,7 @@ TEST(test_14, boolean_operator_less_equal_test)
     ASSERT_TRUE(((s2 <= s1) && (s2 <= s3)) == true);
 }
 
-TEST(test_15, add_with_assign_operator_test)
+TEST(test_40, add_with_assign_operator_test)
 {
     Seven s1 {'3', '2', '3'};
     Seven s2 {'1', '1', '1'};
@@ -138,7 +173,7 @@ TEST(test_15, add_with_assign_operator_test)
     ASSERT_TRUE((s1 + s2) == s3);
 }
 
-TEST(test_16, sub_with_assign_operator_test)
+TEST(test_41, sub_with_assign_operator_test)
 {
     Seven s1 {'3', '2', '3'};
     Seven s2 {'1', '1', '1'};

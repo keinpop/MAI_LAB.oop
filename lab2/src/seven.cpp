@@ -249,6 +249,11 @@ Seven Seven::operator+(const Seven & other) const
         tmp.resizeArrayPlus();
         tmp._array[j] = carry + '0';
     }
+
+    while (tmp._array[j - 1] == '0' && tmp._size > 1) {
+        tmp.resizeArrayMinus();
+        --j;
+    }
     
     return tmp;
 }
@@ -256,8 +261,7 @@ Seven Seven::operator+(const Seven & other) const
 Seven Seven::operator-(const Seven & other) const
 {
     if (*(this) < other) { // abs
-        Seven res(1, '0');
-        return res;
+        throw std::range_error("Operator minus: the number to be subtracted is greater");
     }
 
     int i = 0;

@@ -46,14 +46,6 @@ int main()
     // if (s6 == s1) 
     //     std::cout << true << std::endl;
     // else std::cout << false << std::boolalpha << std:: endl;
-
-    Seven s1{'1', '3', '4'};
-    Seven s2{'6', '1', '2', '1', '1', '0'};
-    Seven s3{'6', '1', '0', '4', '4', '3'};
-
-    Seven s4 = s1 - s2;
-
-    std::cout << s4 << ' ' << s3 << std::endl;
     
     return 0;
 }
