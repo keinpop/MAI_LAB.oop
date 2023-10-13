@@ -1,4 +1,4 @@
-#include "./header/seven.h"
+#include "../header/seven.h"
 
 #include <gtest/gtest.h>
 

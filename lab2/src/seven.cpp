@@ -1,6 +1,6 @@
 #include "../header/seven.h"
 
-Seven::Seven() : _size(0), _array{nullptr}
+Seven::Seven() : _size(0),  _capacity(0), _array{nullptr}
 {
     std::cout << "Default constructor" << std::endl;
 }
@@ -10,6 +10,7 @@ Seven::Seven(const size_t & n, unsigned char elem)
     std::cout << "Fill constructor zeros" << std::endl;
     _array = new unsigned char[n];
     _size = n;
+    _capacity = n;
 
     if ((elem >= '0') && (elem <= '6')) {
         std::fill_n(_array, n, elem);
@@ -17,10 +18,6 @@ Seven::Seven(const size_t & n, unsigned char elem)
         throw std::range_error("Fille constructor: Invalid symbol");
     }
 
-    while (_array[_size - 1] == '0' && _size > 1) {
-        this->resizeArrayMinus();
-        --_size;
-    }
 }
 
 Seven::Seven(const std::initializer_list<unsigned char> & str)
@@ -28,6 +25,7 @@ Seven::Seven(const std::initializer_list<unsigned char> & str)
     std::cout << "Initializer list constructor" << std::endl;
     _array = new unsigned char[str.size()];
     _size = str.size();
+    _capacity = str.size();
 
     size_t i = str.size() - 1;
     for (auto &c : str) {
@@ -38,23 +36,20 @@ Seven::Seven(const std::initializer_list<unsigned char> & str)
         }
     }
 
-    while (_array[_size - 1] == '0' && _size > 1) {
-        this->resizeArrayMinus();
-        --_size;
-    }
+    this->removeLeadingZeros();
 }
 
 Seven::Seven(const Seven &other)
 {
     this->_size = other._size;
     this->_array = new unsigned char[_size];
+    this->_capacity = other._capacity;
     
-    memcpy(this->_array, other._array, this->_size * sizeof(unsigned char));
-
-    while (_array[_size - 1] == '0' && _size > 1) {
-        this->resizeArrayMinus();
-        --_size;
+    if (other._capacity > this->_capacity) {
+        this->reallocate(other._capacity);
     }
+
+    memcpy(this->_array, other._array, this->_size * sizeof(unsigned char));
 }
 
 Seven::Seven(const std::string & other)
@@ -62,6 +57,7 @@ Seven::Seven(const std::string & other)
     std::cout << "Initializer list constructor" << std::endl;
     _array = new unsigned char[other.size()];
     _size = other.size();
+    _capacity = other.size();
     size_t iter{0}; 
     for (int i = _size - 1; i >= 0; --i) {
         if (other[i] >= '0' && other[i] <= '6') {
@@ -71,10 +67,7 @@ Seven::Seven(const std::string & other)
         }
     }
 
-    while (_array[_size - 1] == '0' && _size > 1) {
-        this->resizeArrayMinus();
-        --_size;
-    }
+    this->removeLeadingZeros();
 }
 
 Seven::Seven(Seven&& other) noexcept
@@ -82,17 +75,14 @@ Seven::Seven(Seven&& other) noexcept
     std::cout << "Move constructor" << std::endl;
     std::swap(_size, other._size);
     std::swap(_array, other._array);
-
-    while (_array[_size - 1] == '0' && _size > 1) {
-        this->resizeArrayMinus();
-        --_size;
-    }
+    std::swap(_capacity, other._capacity);
 }
 
 Seven::~Seven() noexcept
 {
-    if (_size > 0) {
+    if (_capacity > 0) {
         _size = 0;
+        _capacity = 0;
         delete[] _array;
         _array = nullptr;
     }
@@ -113,26 +103,26 @@ void Seven::setArrayElem(size_t iter, unsigned char value)
     _array[iter] = value;
 }
 
-void Seven::resizeArrayPlus()
+size_t Seven::calculateCapacity(const size_t minSize)
 {
-    unsigned char* tmp = new unsigned char[_size + 1];
-    tmp[_size] = '0';
-    std::memcpy(tmp, _array, (_size) * sizeof(unsigned char));
-
-    delete[] this->_array;
-    _array = tmp;
-    _size++;
+    size_t newCapacity = _capacity;
+    while (newCapacity < minSize) {
+        if (newCapacity >= std::numeric_limits<size_t>::max() - newCapacity) {
+            return std::numeric_limits<size_t>::max();
+        }
+        newCapacity *= 2;
+    }
+    return newCapacity;
 }
 
-void Seven::resizeArrayMinus()
+void Seven::reallocate(const size_t minSize)
 {
-    unsigned char* tmp = new unsigned char[_size - 1];
-    tmp[_size] = '0';
-    std::memcpy(tmp, _array, (_size - 1) * sizeof(unsigned char));
+    size_t newCapacity = calculateCapacity(minSize);
+    unsigned char* tmp = new unsigned char[newCapacity];
 
     delete[] this->_array;
-    _array = tmp;
-    _size--;
+    memcpy(tmp, _array, _size * sizeof(unsigned char));
+    _capacity = newCapacity;
 }
 
 unsigned char & Seven::operator[](size_t index)
@@ -233,11 +223,23 @@ std::istream & operator>>(std::istream & stream, Seven & seven)
     return stream;
 }
 
-void Seven::operator=(Seven & other)
+void Seven::operator=(const Seven & other)
 {
     this->_size = other._size;
     this->_array = new unsigned char[_size];
+    this->_capacity = other._capacity;
+    if (other._capacity > this->_capacity) {
+        this->reallocate(other._capacity);
+    }
     memcpy(this->_array, other._array, this->_size * sizeof(unsigned char));
+}
+
+void Seven::operator=(Seven && other)
+{
+    std::cout << "Move constructor" << std::endl;
+    std::swap(_size, other._size);
+    std::swap(_array, other._array);
+    std::swap(_capacity, other._capacity);
 }
 
 Seven Seven::operator+(const Seven & other) const
@@ -271,13 +273,11 @@ Seven Seven::operator+(const Seven & other) const
     }
 
     if (carry) {
-        tmp.resizeArrayPlus();
+        if (tmp._size + 1 < tmp._capacity) {
+            tmp.reallocate(_size + 1);
+        }
         tmp._array[j] = carry + '0';
-    }
-
-    while (tmp._array[j - 1] == '0' && tmp._size > 1) {
-        tmp.resizeArrayMinus();
-        --j;
+        ++tmp._size;
     }
     
     return tmp;
@@ -318,15 +318,12 @@ Seven Seven::operator-(const Seven & other) const
         sum = 0;
     }
 
-    while (tmp._array[j - 1] == '0' && tmp._size > 1) {
-        tmp.resizeArrayMinus();
-        --j;
-    }
+    tmp.removeLeadingZeros();
 
     return tmp;
 }
 
-Seven Seven::operator+=(const Seven & other)
+Seven & Seven::operator+=(const Seven & other)
 {
     Seven tmp = *(this) + other;
     *(this) = tmp;
@@ -334,10 +331,19 @@ Seven Seven::operator+=(const Seven & other)
     return *(this);
 }
 
-Seven Seven::operator-=(const Seven & other)
+Seven & Seven::operator-=(const Seven & other)
 {
     Seven tmp = *(this) - other;
     *(this) = tmp;
 
     return *(this);
+}
+
+void Seven::removeLeadingZeros()
+{
+    size_t i = _size;
+    while (this->_array[i - 1] == '0' && this->_size > 1) {
+        --this->_size;
+        --i;
+    }
 }

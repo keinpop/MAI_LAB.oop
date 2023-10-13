@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <ostream>
+#include <limits>
 
 class Seven
 {
@@ -21,10 +22,6 @@ public:
     size_t getSize() const;
     unsigned char getArrayElem(size_t iter);
     void setArrayElem(size_t iter, unsigned char value);
-    void resizeArrayPlus();
-    void resizeArrayMinus();
-
-    unsigned char & operator[](size_t index);
     
     bool operator>(const Seven & other) const;
     bool operator>=(const Seven & other) const;
@@ -36,14 +33,22 @@ public:
     friend std::ostream & operator<<(std::ostream &stream, const Seven & seven);
     friend std::istream & operator>>(std::istream & stream, Seven & seven);
     
-    void operator=(Seven & other);
+    void operator=(const Seven & other);
+    void operator=(Seven && other);
     Seven operator+(const Seven & other) const;
     Seven operator-(const Seven & other) const;
 
-    Seven operator+=(const Seven & other);
-    Seven operator-=(const Seven & other);
+    Seven & operator+=(const Seven & other);
+    Seven & operator-=(const Seven & other);
+
+private:
+    unsigned char & operator[](size_t index);
+    size_t calculateCapacity(const size_t minSize);
+    void reallocate(const size_t minSize);
+    void removeLeadingZeros();
 
 private:
     size_t _size;
+    size_t _capacity;
     unsigned char *_array;
 };
