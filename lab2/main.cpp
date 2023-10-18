@@ -47,14 +47,11 @@ int main()
     //     std::cout << true << std::endl;
     // else std::cout << false << std::boolalpha << std:: endl;
 
-    Seven s1 {'1', '2', '3'};
-    Seven s2 {'2', '3', '5'};
-    Seven s3 {'3', '6', '1'};
-    Seven s4(3, '0');
-    s4 = s1 + s2;
+    Seven s1("123");
+    Seven s12("123");
+    Seven s2();
 
-    std::cout << s3 << ' ' << s4 << std::endl;
-    
+    std::cout << s1 << ' ' << s2 << std::endl;
 
     return 0;
 }

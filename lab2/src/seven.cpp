@@ -120,8 +120,8 @@ void Seven::reallocate(const size_t minSize)
     size_t newCapacity = calculateCapacity(minSize);
     unsigned char* tmp = new unsigned char[newCapacity];
 
-    delete[] this->_array;
     memcpy(tmp, _array, _size * sizeof(unsigned char));
+    delete[] this->_array;
     _capacity = newCapacity;
 }
 
@@ -216,7 +216,6 @@ std::istream & operator>>(std::istream & stream, Seven & seven)
 {
     std::string str;
     stream >> str;
-    std::reverse(str.end(), str.begin());
     Seven tmp(str);
     seven = tmp;
 
@@ -225,13 +224,15 @@ std::istream & operator>>(std::istream & stream, Seven & seven)
 
 void Seven::operator=(const Seven & other)
 {
-    this->_size = other._size;
-    this->_array = new unsigned char[_size];
-    this->_capacity = other._capacity;
     if (other._capacity > this->_capacity) {
         this->reallocate(other._capacity);
-    }
-    memcpy(this->_array, other._array, this->_size * sizeof(unsigned char));
+    } else if (other._capacity < this->_capacity) {
+        delete[] this->_array;
+        this->_array = new unsigned char[other._capacity];
+    }   
+    this->_size = other._size;
+    this->_capacity = other._capacity;
+    memcpy(this->_array, other._array, other._size * sizeof(unsigned char));
 }
 
 void Seven::operator=(Seven && other)

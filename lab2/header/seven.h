@@ -48,7 +48,7 @@ private:
     void removeLeadingZeros();
 
 private:
-    size_t _size;
-    size_t _capacity;
+    size_t _size = 0;
+    size_t _capacity = 0;
     unsigned char *_array;
 };

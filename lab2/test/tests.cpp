@@ -7,10 +7,11 @@ bool constructorTest()
     Seven s1 {'1', '2', '3'};
     std::string test = "123";
     Seven s2(test);
-    Seven s3 {'3', '6', '1'}, s4(s3);
+    Seven s31("361"), s3 {'3', '6', '1'}, s4(std::move(s31));
     Seven s5{'0', '0', '0'}, s6("000");
+    Seven s7(s6);
 
-    return (s1 == s2) && (s3 == s4) && (s5 == s6);
+    return (s1 == s2) && (s3 == s4) && (s5 == s6) && (s7 == s6);
 }
 
 TEST(test_00, constructorTest)
