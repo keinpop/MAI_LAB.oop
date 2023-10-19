@@ -20,6 +20,7 @@ std::istream & operator>>(std::istream & stream, Square & sq)
     if (sq._points.size() != 0) {
         throw std::range_error("Error! operator>>: this Square already has points");
     } else {
+        std::vector<Coord> points;
         Coord tmp;
         int numbOfTop = 4;
         for (size_t i = 0; i < numbOfTop; ++i) {
@@ -30,7 +31,13 @@ std::istream & operator>>(std::istream & stream, Square & sq)
             std::cout << "Enter Oy: ";
             stream >> tmp.y;
 
-            sq._points.push_back(tmp);
+            points.push_back(tmp);
+        }
+
+        if (sq.checkValidPointsSquare(points)) {
+            sq._points = points;
+        } else {
+            throw std::range_error("Error! Square Constructor: invalid points");
         }
     }
 
@@ -39,23 +46,18 @@ std::istream & operator>>(std::istream & stream, Square & sq)
 
 Square::operator double() const // Calculate area of Square
 {
-    return this->calculateLengthOfSide() * this->calculateLengthOfSide(); 
+    return pow(this->calculateLengthOfSide(), 2); 
 }
 
 void Square::operator=(const Square & other)
 {
-    if (other._points.size() > this->_points.size()) {
-        this->_points.resize(other._points.size());
-    } else if (other._points.size() < this->_points.size()) {
+    if (other._points.size() < this->_points.size()) {
         this->_points = std::vector<Coord> (other._points.size());
+    } else {
+        this->_points = other._points;
     }
 
     this->_points = other._points;
-}
-
-void Square::operator=(Square && other)
-{
-    std::swap(_points, other._points);
 }
 
 bool Square::operator==(const Square & other) const
@@ -67,29 +69,32 @@ bool Square::operator==(const Square & other) const
     return true;
 }
 
-double Square::calculateLengthOfHypotenuse(const Coord & p1, const Coord & p2) const
-{   
-    return sqrt(pow(p1.x, 2) + pow(p2.x, 2)); 
-}
-
 bool Square::checkValidPointsSquare(const std::vector<Coord> & points)
 {
-    if (calculateLengthOfHypotenuse(points[0], points[2]) == calculateLengthOfHypotenuse(points[1], points[3]) &&
-        calculateLengthOfHypotenuse(points[2], points[0]) == calculateLengthOfHypotenuse(points[3], points[1])) {
+    bool allSidesEqual = true;
+
+    for (int i = 0; i < 4; i++) {
+        int nextIndex = (i + 1) % 4;
+        double sideLength1 = round(sqrt(pow(points[nextIndex].x - points[i].x, 2) +
+                                 pow(points[nextIndex].y - points[i].y, 2)));
+        double sideLength2 = round(sqrt(pow(points[(nextIndex + 1) % 4].x - points[nextIndex].x, 2) +
+                                 pow(points[(nextIndex + 1) % 4].y - points[nextIndex].y, 2)));
         
-        return true;
+        if ((round(sideLength1) != round(sideLength2)) &&
+            ((sideLength1 - sideLength2 < EPS) ||
+            (sideLength2 - sideLength1 < EPS))) {
+                
+            allSidesEqual = false;
+            break; 
+        }
     }
 
-    return false;
+    return allSidesEqual;
 }
+
 
 double Square::calculateLengthOfSide() const
 {
-    if (this->_points[0].x == this->_points[1].x) {
-        return _points[1].y - _points[0].y;
-    } else if (this->_points[0].y == this->_points[1].y) {
-        return _points[1].x - _points[0].x;
-    }
-
-    return 0;
+    return sqrt(pow(_points[1].x - _points[0].x, 2) + 
+            pow(_points[1].y - _points[0].y, 2));
 }

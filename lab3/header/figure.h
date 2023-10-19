@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <ostream>
+#include <cmath>
+
+#define EPS pow(10, -3)
 
 typedef struct _coordinates {
     double x;
@@ -26,6 +29,9 @@ public:
     friend std::istream & operator>>(std::istream & stream, Figure & fig);
     
     virtual operator double() const;
+
+    void operator=(const Figure & other);
+    void operator=(Figure && other);
 
 protected:
     std::vector<Coord> _points;

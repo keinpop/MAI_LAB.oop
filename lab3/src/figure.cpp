@@ -81,3 +81,19 @@ Figure::operator double() const
 {
     return 0.0;
 }
+
+void Figure::operator=(const Figure & other)
+{
+    if (other._points.size() > this->_points.size()) {
+        this->_points.resize(other._points.size());
+    } else if (other._points.size() < this->_points.size()) {
+        this->_points = std::vector<Coord> (other._points.size());
+    }
+
+    this->_points = other._points;
+}
+
+void Figure::operator=(Figure && other)
+{
+    std::swap(_points, other._points);
+}
