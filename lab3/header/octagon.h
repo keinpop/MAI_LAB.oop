@@ -6,16 +6,17 @@
 class Octagon final : public Figure
 {
 public:
-    Octagon() = default;
+    Octagon();
     Octagon(const std::vector<Coord> & points);
-    Octagon(const Octagon & other) noexcept = default;
-    Octagon(Octagon && other) noexcept = default;
+    Octagon(const Octagon & other) noexcept;
+    Octagon(Octagon && other) noexcept;
 
     virtual ~Octagon() noexcept;
 
     friend std::istream & operator>>(std::istream & stream, Octagon & sq);
 
-    operator double() const;
+    Coord calculateGeomCentr() const override;
+    operator double() const override;
 
     void operator=(const Octagon & other);
 
@@ -23,8 +24,6 @@ public:
 
 private:
     bool checkValidPointsOctagon(const std::vector<Coord> & points);
-    double calculateLengthOfSide() const;
-
 };
 
 #endif // __OCTAGON_H__

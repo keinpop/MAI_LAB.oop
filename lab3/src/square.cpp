@@ -8,7 +8,20 @@ Square::Square(const std::vector<Coord> & points)
         throw std::range_error("Error! Square Constructor: invalid points");
     } else {
         _points = points;
+        _name = "Square";
     }
+}
+
+Square::Square(const Square & other) noexcept
+{
+    _points = other._points;
+    _name = "Square";
+}
+
+Square::Square(Square && other) noexcept
+{
+    std::swap(_points, other._points);
+    other._name = "Square";
 }
 
 Square::~Square() noexcept
@@ -44,6 +57,21 @@ std::istream & operator>>(std::istream & stream, Square & sq)
     return stream;
 }
 
+Coord Square::calculateGeomCentr() const
+{
+    Coord tmp;
+
+    for (size_t i = 0; i < _points.size(); ++i) {
+        tmp.x += _points[i].x;
+        tmp.y += _points[i].y;
+    }
+
+    tmp.x /= _points.size();
+    tmp.y /= _points.size();
+
+    return tmp;
+}
+
 Square::operator double() const // Calculate area of Square
 {
     return pow(this->calculateLengthOfSide(), 2); 
@@ -72,29 +100,25 @@ bool Square::operator==(const Square & other) const
 bool Square::checkValidPointsSquare(const std::vector<Coord> & points)
 {
     bool allSidesEqual = true;
+    bool allAnglesRight = true;
 
     for (int i = 0; i < 4; i++) {
         int nextIndex = (i + 1) % 4;
-        double sideLength1 = round(sqrt(pow(points[nextIndex].x - points[i].x, 2) +
+        double sideLength1 = (sqrt(pow(points[nextIndex].x - points[i].x, 2) +
                                  pow(points[nextIndex].y - points[i].y, 2)));
-        double sideLength2 = round(sqrt(pow(points[(nextIndex + 1) % 4].x - points[nextIndex].x, 2) +
+        double sideLength2 = (sqrt(pow(points[(nextIndex + 1) % 4].x - points[nextIndex].x, 2) +
                                  pow(points[(nextIndex + 1) % 4].y - points[nextIndex].y, 2)));
         
         if ((round(sideLength1) != round(sideLength2)) &&
-            ((sideLength1 - sideLength2 < EPS) ||
-            (sideLength2 - sideLength1 < EPS))) {
+            ((abs(sideLength1 - sideLength2) < EPS) ||
+            (abs(sideLength2 - sideLength1) < EPS))) {
                 
             allSidesEqual = false;
             break; 
         }
+
+
     }
 
-    return allSidesEqual;
-}
-
-
-double Square::calculateLengthOfSide() const
-{
-    return sqrt(pow(_points[1].x - _points[0].x, 2) + 
-            pow(_points[1].y - _points[0].y, 2));
+    return allSidesEqual ;
 }

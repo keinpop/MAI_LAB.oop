@@ -8,7 +8,20 @@ Triangle::Triangle(const std::vector<Coord> & points)
         throw std::range_error("Error! Triangle Constructor: invalid points");
     } else {
         _points = points;
+        _name = "Triangle";
     }
+}
+
+Triangle::Triangle(const Triangle & other) noexcept
+{
+    _points = other._points;
+    _name = "Triangle";
+}
+
+Triangle::Triangle(Triangle && other) noexcept
+{
+    std::swap(_points, other._points);
+    other._name = "Triangle";
 }
 
 Triangle::~Triangle() noexcept
@@ -43,6 +56,21 @@ std::istream & operator>>(std::istream & stream, Triangle & tr)
     }    
 
     return stream;
+}
+
+Coord Triangle::calculateGeomCentr() const
+{
+    Coord tmp;
+
+    for (size_t i = 0; i < _points.size(); ++i) {
+        tmp.x += _points[i].x;
+        tmp.y += _points[i].y;
+    }
+
+    tmp.x /= _points.size();
+    tmp.y /= _points.size();
+
+    return tmp;
 }
 
 Triangle::operator double() const // Calculate area of Triangle
@@ -84,8 +112,8 @@ bool Triangle::checkValidPointsTriangle(const std::vector<Coord> & points)
                                  pow(points[(nextIndex + 1) % 3].y - points[nextIndex].y, 2)));
         
         if ((round(sideLength1) != round(sideLength2)) &&
-            ((sideLength1 - sideLength2 < EPS) ||
-            (sideLength2 - sideLength1 < EPS))) {
+            ((abs(sideLength1 - sideLength2) < EPS) ||
+            (abs(sideLength2 - sideLength1) < EPS))) {
                 
             allSidesEqual = false; 
             break;
@@ -93,10 +121,4 @@ bool Triangle::checkValidPointsTriangle(const std::vector<Coord> & points)
     }
 
     return allSidesEqual;   
-}
-
-double Triangle::calculateLengthOfSide() const
-{
-    return sqrt(pow(this->_points[0].x - this->_points[1].x, 2) + 
-        pow(this->_points[0].y - this->_points[1].y, 2));
 }

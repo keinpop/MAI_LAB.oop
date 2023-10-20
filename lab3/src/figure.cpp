@@ -11,33 +11,8 @@ Figure::Figure(const std::vector<Coord> & points)
     _points = points;
 }
 
-Figure::Figure(const Figure & other) noexcept
-{
-    _points = other._points;
-}
-
-Figure::Figure(Figure && other) noexcept
-{
-    std::swap(_points, other._points);
-}
-
 Figure::~Figure() noexcept
 {   
-}
-
-Coord Figure::calculateGeomCentr() const
-{
-    Coord tmp;
-
-    for (size_t i = 0; i < _points.size(); ++i) {
-        tmp.x += _points[i].x;
-        tmp.y += _points[i].y;
-    }
-
-    tmp.x /= _points.size();
-    tmp.y /= _points.size();
-
-    return tmp;
 }
 
 std::ostream & operator<<(std::ostream & stream, Coord coord)
@@ -76,12 +51,6 @@ std::istream & operator>>(std::istream & stream, Figure & fig)
     return stream;
 }
 
-
-Figure::operator double() const
-{
-    return 0.0;
-}
-
 void Figure::operator=(const Figure & other)
 {
     if (other._points.size() > this->_points.size()) {
@@ -96,4 +65,15 @@ void Figure::operator=(const Figure & other)
 void Figure::operator=(Figure && other)
 {
     std::swap(_points, other._points);
+}
+
+double Figure::calculateLengthOfSide() const
+{
+    return sqrt(pow(this->_points[0].x - this->_points[1].x, 2) + 
+        pow(this->_points[0].y - this->_points[1].y, 2));
+}
+
+const std::string Figure::getNameFigure() const
+{
+    return this->_name;
 }

@@ -18,23 +18,24 @@ class Figure
 public:
     Figure();
     Figure(const std::vector<Coord> & points);
-    Figure(const Figure & other) noexcept;
-    Figure(Figure&& other) noexcept;
 
     ~Figure() noexcept;
 
-    Coord calculateGeomCentr() const;
-    friend std::ostream & operator<<(std::ostream & stream, Coord coord);
     friend std::ostream & operator<<(std::ostream & stream, const Figure & fig);
     friend std::istream & operator>>(std::istream & stream, Figure & fig);
     
-    virtual operator double() const;
+    virtual Coord calculateGeomCentr() const = 0;
+    
+    virtual operator double() const = 0;
 
     void operator=(const Figure & other);
     void operator=(Figure && other);
 
+    virtual double calculateLengthOfSide() const;
+    const std::string getNameFigure() const;
 protected:
     std::vector<Coord> _points;
+    std::string _name = "unnamed";
 };
 
 #endif // __FIGURE_H__

@@ -8,14 +8,15 @@ class Square final : public Figure
 public:
     Square() = default;
     Square(const std::vector<Coord> & points);
-    Square(const Square & other) noexcept = default;
-    Square(Square && other) noexcept = default;
+    Square(const Square & other) noexcept;
+    Square(Square && other) noexcept;
 
     virtual ~Square() noexcept;
 
     friend std::istream & operator>>(std::istream & stream, Square & sq);
     
-    operator double() const;
+    Coord calculateGeomCentr() const override;
+    operator double() const override;
     
     void operator=(const Square & other);
 
@@ -23,7 +24,6 @@ public:
 
 private:
     bool checkValidPointsSquare(const std::vector<Coord> & points);
-    double calculateLengthOfSide() const;
 };
 
 #endif // __SQUARE_H__

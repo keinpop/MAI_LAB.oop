@@ -1,5 +1,12 @@
 #include "../header/octagon.h"
 
+Octagon::Octagon()
+{
+    std::vector<Coord> points;
+    _points = points;
+    _name = "Octagon";
+}
+
 Octagon::Octagon(const std::vector<Coord> & points)
 {
     if (points.size() != 8) {
@@ -8,7 +15,20 @@ Octagon::Octagon(const std::vector<Coord> & points)
         throw std::range_error("Error! Octagon Constructor: invalid points");
     } else {
         _points = points;
+        _name = "Octagon";
     }
+}
+
+Octagon::Octagon(const Octagon & other) noexcept
+{
+    _points = other._points;
+    _name = "Octagon";
+}
+
+Octagon::Octagon(Octagon && other) noexcept
+{
+    std::swap(_points, other._points);
+    other._name = "Octagon";
 }
 
 Octagon::~Octagon() noexcept
@@ -44,13 +64,26 @@ std::istream & operator>>(std::istream & stream, Octagon & oc)
     return stream;
 }
 
-Octagon::operator double() const // Calculate area of Square
+Coord Octagon::calculateGeomCentr() const
+{
+    Coord tmp;
+
+    for (size_t i = 0; i < _points.size(); ++i) {
+        tmp.x += _points[i].x;
+        tmp.y += _points[i].y;
+    }
+
+    tmp.x /= _points.size();
+    tmp.y /= _points.size();
+
+    return tmp;
+}
+
+Octagon::operator double() const // Calculate area of Octagon
 {
     double lenSide = this->calculateLengthOfSide();
-    double triangleArea = 0.25 * pow(lenSide, 2) * sqrt(2);
-    double numberOfTriangle = 8;
 
-    return numberOfTriangle * triangleArea;
+    return (2 * pow(lenSide, 2) * (1 + sqrt(2)));
 }
 
 void Octagon::operator=(const Octagon & other)
@@ -84,10 +117,9 @@ bool Octagon::checkValidPointsOctagon(const std::vector<Coord> & points)
         double sideLength2 = (sqrt(pow(points[(nextIndex + 1) % 8].x - points[nextIndex].x, 2) +
                                  pow(points[(nextIndex + 1) % 8].y - points[nextIndex].y, 2)));
         
-        std::cout << sideLength1 << ' ' << sideLength2 << std::endl;
         if ((round(sideLength1) != round(sideLength2)) &&
-            ((sideLength1 - sideLength2 < EPS) ||
-            (sideLength2 - sideLength1 < EPS))) {
+            ((abs(sideLength1 - sideLength2) < EPS) ||
+            (abs(sideLength2 - sideLength1) < EPS))) {
 
             allSidesEqual = false; 
             break;
@@ -95,10 +127,4 @@ bool Octagon::checkValidPointsOctagon(const std::vector<Coord> & points)
     }
 
     return allSidesEqual;
-}
-
-double Octagon::calculateLengthOfSide() const
-{
-    return sqrt(pow(_points[1].x - _points[0].x, 2) + 
-            pow(_points[1].y - _points[0].y, 2));
 }

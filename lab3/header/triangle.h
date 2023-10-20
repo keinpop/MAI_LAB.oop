@@ -8,14 +8,15 @@ class Triangle final : public Figure
 public:
     Triangle() = default;
     Triangle(const std::vector<Coord> & points);
-    Triangle(const Triangle & other) noexcept = default;
-    Triangle(Triangle && other) noexcept = default;
+    Triangle(const Triangle & other) noexcept;
+    Triangle(Triangle && other) noexcept;
 
     virtual ~Triangle() noexcept;
 
     friend std::istream & operator>>(std::istream & stream, Triangle & tr);
 
-    operator double() const;
+    Coord calculateGeomCentr() const override;
+    operator double() const override;
 
     void operator=(const Triangle & other);
 
@@ -23,7 +24,6 @@ public:
 
 private:
     bool checkValidPointsTriangle(const std::vector<Coord> & points);
-    double calculateLengthOfSide() const;
 };
 
 #endif //__TRIANGLE_H__
