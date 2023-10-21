@@ -11,7 +11,7 @@ public:
     Octagon(const Octagon & other) noexcept;
     Octagon(Octagon && other) noexcept;
 
-    virtual ~Octagon() noexcept;
+    ~Octagon() noexcept;
 
     friend std::istream & operator>>(std::istream & stream, Octagon & sq);
 

@@ -11,7 +11,7 @@ public:
     Triangle(const Triangle & other) noexcept;
     Triangle(Triangle && other) noexcept;
 
-    virtual ~Triangle() noexcept;
+    ~Triangle() noexcept;
 
     friend std::istream & operator>>(std::istream & stream, Triangle & tr);
 

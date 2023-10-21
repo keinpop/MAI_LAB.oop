@@ -51,16 +51,6 @@ std::istream & operator>>(std::istream & stream, Figure & fig)
     return stream;
 }
 
-void Figure::operator=(const Figure & other)
-{
-    this->_points = other._points;
-}
-
-void Figure::operator=(Figure && other)
-{
-    this->_points = other._points;
-}
-
 double Figure::calculateLengthOfSide() const
 {
     return sqrt(pow(this->_points[0].x - this->_points[1].x, 2) + 

@@ -11,7 +11,7 @@ public:
     Square(const Square & other) noexcept;
     Square(Square && other) noexcept;
 
-    virtual ~Square() noexcept;
+    ~Square() noexcept;
 
     friend std::istream & operator>>(std::istream & stream, Square & sq);
     

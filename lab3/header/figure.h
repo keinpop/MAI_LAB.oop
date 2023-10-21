@@ -28,10 +28,7 @@ public:
     
     virtual operator double() const = 0;
 
-    void operator=(const Figure & other);
-    void operator=(Figure && other);
-
-    virtual double calculateLengthOfSide() const;
+    double calculateLengthOfSide() const;
     std::string getNameFigure() const;
 protected:
     std::vector<Coord> _points;

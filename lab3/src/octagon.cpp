@@ -98,11 +98,7 @@ void Octagon::operator=(Octagon && other)
 
 bool Octagon::operator==(const Octagon & other) const
 {
-    if (this->calculateLengthOfSide() != other.calculateLengthOfSide()) {
-        return false;       
-    }
-
-    return true;
+    return (this->calculateLengthOfSide() == other.calculateLengthOfSide());
 }
 
 bool Octagon::checkValidPointsOctagon(const std::vector<Coord> & points)
