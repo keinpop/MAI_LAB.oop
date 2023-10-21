@@ -47,7 +47,7 @@ void ArrayFig::printAreas()
     }
 }
 
-double ArrayFig::getAllArea()
+ArrayFig::operator double() const // Calculate area of all Array
 {
     double result = 0;
 
@@ -68,7 +68,7 @@ void ArrayFig::pushBack(Figure* figure)
             newArray[i] = this->_array[i];
         }
 
-        delete[] figure;
+        delete figure;
         this->_array = newArray;
     }
 
@@ -81,18 +81,15 @@ void ArrayFig::deleteToIndex(size_t index)
         throw std::range_error("Error! ArrayFig deleteToIndex: Invalid index for deletion.");
     }
 
-    Figure** newArray = new Figure*[_capacity - 1];
-
-    for (size_t i = 0, j = 0; i < _size; ++i) {
-        if (i != index) {
-            newArray[j++] = this->_array[i];
-        }
+    for (size_t i = index; i < _size - 1; ++i) {
+        this->_array[i] = this->_array[i + 1]; // Копируем элементы сдвигая их на одну позицию назад
     }
 
-    delete[] this->_array;
-
     _size--;
-    _capacity--;
+}
 
-    this->_array = newArray;
+
+size_t ArrayFig::getSize()
+{
+    return _size;
 }

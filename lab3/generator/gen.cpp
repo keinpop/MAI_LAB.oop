@@ -30,7 +30,7 @@ void generateCoordSquare(Coord basicPoint, double lengthSide, double angle) {
     
 
     for (int i = 0; i < 4; ++i) {
-        std::cout << "Vertex " << i + 1 << ": (" << vertices[i].x << ", " << vertices[i].y << ")" << std::endl;
+        std::cout << "Coord sq" << i + 1 << "= {" << vertices[i].x << ", " << vertices[i].y << "}" << std::endl;
     }
 }
 
@@ -56,7 +56,7 @@ void generateCoordTriangle(Coord basicPoint, double lengthSide, double angle) {
     }
 
     for (int i = 0; i < 3; ++i) {
-        std::cout << "Coord " << i + 1 << ": {" << vertices[i].x << ", " << vertices[i].y << "}" << std::endl;
+        std::cout << "Coord tr" << i + 1 << "= {" << vertices[i].x << ", " << vertices[i].y << "}" << std::endl;
     }
 }
 
@@ -82,7 +82,7 @@ void generateCoordOctagon(Coord basicPoint, double lengthSide, double angle) {
     }
 
     for (int i = 0; i < 8; ++i) {
-        std::cout << "Coord " << i + 1 << ": {" << vertices[i].x << ", " << vertices[i].y << "}" << std::endl;
+        std::cout << "Coord oc" << i + 1 << "= {" << vertices[i].x << ", " << vertices[i].y << "};" << std::endl;
     }
 }
 

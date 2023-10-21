@@ -1,5 +1,12 @@
 #include "../header/square.h"
 
+Square::Square()
+{
+    std::vector<Coord> points;
+    _points = points;
+    _name = "Square";
+}
+
 Square::Square(const std::vector<Coord> & points)
 {
     if (points.size() != 4) {
@@ -20,7 +27,7 @@ Square::Square(const Square & other) noexcept
 
 Square::Square(Square && other) noexcept
 {
-    std::swap(_points, other._points);
+    _points = other._points;
     other._name = "Square";
 }
 
@@ -79,12 +86,11 @@ Square::operator double() const // Calculate area of Square
 
 void Square::operator=(const Square & other)
 {
-    if (other._points.size() < this->_points.size()) {
-        this->_points = std::vector<Coord> (other._points.size());
-    } else {
-        this->_points = other._points;
-    }
+    this->_points = other._points;
+}
 
+void Square::operator=(Square && other)
+{
     this->_points = other._points;
 }
 
@@ -108,11 +114,10 @@ bool Square::checkValidPointsSquare(const std::vector<Coord> & points)
                                  pow(points[nextIndex].y - points[i].y, 2)));
         double sideLength2 = (sqrt(pow(points[(nextIndex + 1) % 4].x - points[nextIndex].x, 2) +
                                  pow(points[(nextIndex + 1) % 4].y - points[nextIndex].y, 2)));
-        
-        if ((round(sideLength1) != round(sideLength2)) &&
-            ((abs(sideLength1 - sideLength2) < EPS) ||
-            (abs(sideLength2 - sideLength1) < EPS))) {
-                
+
+        if ((round(sideLength1) != round(sideLength2) &&
+            (!(abs(sideLength1 - sideLength2) < EPS) &&
+            !(abs(sideLength2 - sideLength1) < EPS)))) {
             allSidesEqual = false;
             break; 
         }

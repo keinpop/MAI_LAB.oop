@@ -6,7 +6,7 @@
 class Square final : public Figure
 {
 public:
-    Square() = default;
+    Square();
     Square(const std::vector<Coord> & points);
     Square(const Square & other) noexcept;
     Square(Square && other) noexcept;
@@ -19,10 +19,10 @@ public:
     operator double() const override;
     
     void operator=(const Square & other);
+    void operator=(Square && other);
 
     bool operator==(const Square & other) const;
 
-private:
     bool checkValidPointsSquare(const std::vector<Coord> & points);
 };
 

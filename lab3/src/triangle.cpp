@@ -1,5 +1,12 @@
 #include "../header/triangle.h"
 
+Triangle::Triangle()
+{
+    std::vector<Coord> points;
+    _points = points;
+    _name = "Triangle";
+}
+
 Triangle::Triangle(const std::vector<Coord> & points)
 {
     if (points.size() != 3) {
@@ -20,7 +27,7 @@ Triangle::Triangle(const Triangle & other) noexcept
 
 Triangle::Triangle(Triangle && other) noexcept
 {
-    std::swap(_points, other._points);
+    _points = other._points;
     other._name = "Triangle";
 }
 
@@ -82,12 +89,11 @@ Triangle::operator double() const // Calculate area of Triangle
 
 void Triangle::operator=(const Triangle & other)
 {
-    if (other._points.size() < this->_points.size()) {
-        this->_points = std::vector<Coord> (other._points.size());
-    } else {
-        this->_points = other._points;
-    }
+    this->_points = other._points;
+}
 
+void Triangle::operator=(Triangle && other)
+{
     this->_points = other._points;
 }
 
@@ -112,8 +118,8 @@ bool Triangle::checkValidPointsTriangle(const std::vector<Coord> & points)
                                  pow(points[(nextIndex + 1) % 3].y - points[nextIndex].y, 2)));
         
         if ((round(sideLength1) != round(sideLength2)) &&
-            ((abs(sideLength1 - sideLength2) < EPS) ||
-            (abs(sideLength2 - sideLength1) < EPS))) {
+            (!(abs(sideLength1 - sideLength2) < EPS) &&
+            !(abs(sideLength2 - sideLength1) < EPS))) {
                 
             allSidesEqual = false; 
             break;

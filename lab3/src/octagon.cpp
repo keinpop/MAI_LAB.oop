@@ -27,8 +27,8 @@ Octagon::Octagon(const Octagon & other) noexcept
 
 Octagon::Octagon(Octagon && other) noexcept
 {
-    std::swap(_points, other._points);
-    other._name = "Octagon";
+    _points = other._points;
+    _name = "Octagon";
 }
 
 Octagon::~Octagon() noexcept
@@ -88,12 +88,11 @@ Octagon::operator double() const // Calculate area of Octagon
 
 void Octagon::operator=(const Octagon & other)
 {
-    if (other._points.size() < this->_points.size()) {
-        this->_points = std::vector<Coord> (other._points.size());
-    } else {
-        this->_points = other._points;
-    }
+    this->_points = other._points;
+}
 
+void Octagon::operator=(Octagon && other)
+{
     this->_points = other._points;
 }
 
@@ -118,8 +117,8 @@ bool Octagon::checkValidPointsOctagon(const std::vector<Coord> & points)
                                  pow(points[(nextIndex + 1) % 8].y - points[nextIndex].y, 2)));
         
         if ((round(sideLength1) != round(sideLength2)) &&
-            ((abs(sideLength1 - sideLength2) < EPS) ||
-            (abs(sideLength2 - sideLength1) < EPS))) {
+            (!(abs(sideLength1 - sideLength2) < EPS) &&
+            !(abs(sideLength2 - sideLength1) < EPS))) {
 
             allSidesEqual = false; 
             break;

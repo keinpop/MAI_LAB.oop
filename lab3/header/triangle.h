@@ -6,7 +6,7 @@
 class Triangle final : public Figure
 {
 public:
-    Triangle() = default;
+    Triangle();
     Triangle(const std::vector<Coord> & points);
     Triangle(const Triangle & other) noexcept;
     Triangle(Triangle && other) noexcept;
@@ -19,10 +19,11 @@ public:
     operator double() const override;
 
     void operator=(const Triangle & other);
+    void operator=(Triangle && other);
 
     bool operator==(const Triangle & other) const; 
 
-private:
+public:
     bool checkValidPointsTriangle(const std::vector<Coord> & points);
 };
 

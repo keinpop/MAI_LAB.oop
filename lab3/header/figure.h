@@ -32,7 +32,7 @@ public:
     void operator=(Figure && other);
 
     virtual double calculateLengthOfSide() const;
-    const std::string getNameFigure() const;
+    std::string getNameFigure() const;
 protected:
     std::vector<Coord> _points;
     std::string _name = "unnamed";

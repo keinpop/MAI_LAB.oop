@@ -12,9 +12,11 @@ public:
     void pushBack(Figure* figure);
     void deleteToIndex(size_t index);
     
+    size_t getSize();
+
     void printGeomCenters();
     void printAreas();
-    double getAllArea();
+    operator double() const;
 private:
     void printCoordGeomCentr(size_t index);
 

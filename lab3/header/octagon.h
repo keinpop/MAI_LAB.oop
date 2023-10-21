@@ -19,6 +19,7 @@ public:
     operator double() const override;
 
     void operator=(const Octagon & other);
+    void operator=(Octagon && other);
 
     bool operator==(const Octagon & other) const;
 

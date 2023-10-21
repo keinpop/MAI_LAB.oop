@@ -53,18 +53,12 @@ std::istream & operator>>(std::istream & stream, Figure & fig)
 
 void Figure::operator=(const Figure & other)
 {
-    if (other._points.size() > this->_points.size()) {
-        this->_points.resize(other._points.size());
-    } else if (other._points.size() < this->_points.size()) {
-        this->_points = std::vector<Coord> (other._points.size());
-    }
-
     this->_points = other._points;
 }
 
 void Figure::operator=(Figure && other)
 {
-    std::swap(_points, other._points);
+    this->_points = other._points;
 }
 
 double Figure::calculateLengthOfSide() const
@@ -73,7 +67,7 @@ double Figure::calculateLengthOfSide() const
         pow(this->_points[0].y - this->_points[1].y, 2));
 }
 
-const std::string Figure::getNameFigure() const
+std::string Figure::getNameFigure() const
 {
     return this->_name;
 }
