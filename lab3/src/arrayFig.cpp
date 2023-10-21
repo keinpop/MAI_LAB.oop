@@ -68,7 +68,7 @@ void ArrayFig::pushBack(Figure* figure)
             newArray[i] = this->_array[i];
         }
 
-        delete figure;
+        delete[] this->_array;
         this->_array = newArray;
     }
 
