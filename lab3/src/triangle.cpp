@@ -10,9 +10,9 @@ Triangle::Triangle()
 Triangle::Triangle(const std::vector<Coord> & points)
 {
     if (points.size() != 3) {
-        throw std::range_error("Error! Triangle Constructor: invalid number of coordinates");
+        throw std::length_error("Error! Triangle Constructor: invalid number of coordinates");
     } else if (!checkValidPointsTriangle(points)){
-        throw std::range_error("Error! Triangle Constructor: invalid points");
+        throw std::invalid_argument("Error! Triangle Constructor: invalid points");
     } else {
         _points = points;
         _name = "Triangle";
@@ -57,7 +57,7 @@ std::istream & operator>>(std::istream & stream, Triangle & tr)
         if (tr.checkValidPointsTriangle(points)) {
             tr._points = points;
         } else {
-            throw std::range_error("Error! Triangle operator>>: invalid points");
+            throw std::length_error("Error! Triangle operator>>: invalid points");
         }
         
     }    

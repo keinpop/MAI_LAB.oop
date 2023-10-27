@@ -10,9 +10,9 @@ Octagon::Octagon()
 Octagon::Octagon(const std::vector<Coord> & points)
 {
     if (points.size() != 8) {
-        throw std::range_error("Error! Octagon Constructor: invalid number of coordinates");
+        throw std::length_error("Error! Octagon Constructor: invalid number of coordinates");
     } else if (!checkValidPointsOctagon(points)){
-        throw std::range_error("Error! Octagon Constructor: invalid points");
+        throw std::invalid_argument("Error! Octagon Constructor: invalid points");
     } else {
         _points = points;
         _name = "Octagon";
@@ -57,7 +57,7 @@ std::istream & operator>>(std::istream & stream, Octagon & oc)
         if (oc.checkValidPointsOctagon(points)) {
             oc._points = points;
         } else {
-            throw std::range_error("Error! Octagon Constructor: invalid points");
+            throw std::length_error("Error! Octagon Constructor: invalid points");
         }
     }
 
@@ -111,11 +111,11 @@ bool Octagon::checkValidPointsOctagon(const std::vector<Coord> & points)
                                  pow(points[nextIndex].y - points[i].y, 2)));
         double sideLength2 = (sqrt(pow(points[(nextIndex + 1) % 8].x - points[nextIndex].x, 2) +
                                  pow(points[(nextIndex + 1) % 8].y - points[nextIndex].y, 2)));
-        
-        if ((round(sideLength1) != round(sideLength2)) &&
-            (!(abs(sideLength1 - sideLength2) < EPS) &&
-            !(abs(sideLength2 - sideLength1) < EPS))) {
 
+        double angle1 = atan2(points[nextIndex].y - points[i].y, points[nextIndex].x - points[i].x);
+        double angle2 = atan2(points[(nextIndex + 1) % 8].y - points[nextIndex].y, points[(nextIndex + 1) % 8].x - points[nextIndex].x);
+        
+        if ((!(abs(sideLength2 - sideLength1) < EPS)) && (!(fabs(angle1 - angle2) < EPS))) {
             allSidesEqual = false; 
             break;
         }

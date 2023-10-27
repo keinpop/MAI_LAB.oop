@@ -10,9 +10,9 @@ Square::Square()
 Square::Square(const std::vector<Coord> & points)
 {
     if (points.size() != 4) {
-        throw std::range_error("Error! Square Constructor: invalid number of coordinates");
+        throw std::length_error("Error! Square Constructor: invalid number of coordinates");
     } else if (!checkValidPointsSquare(points)){
-        throw std::range_error("Error! Square Constructor: invalid points");
+        throw std::invalid_argument("Error! Square Constructor: invalid points");
     } else {
         _points = points;
         _name = "Square";
@@ -57,7 +57,7 @@ std::istream & operator>>(std::istream & stream, Square & sq)
         if (sq.checkValidPointsSquare(points)) {
             sq._points = points;
         } else {
-            throw std::range_error("Error! Square Constructor: invalid points");
+            throw std::length_error("Error! Square Constructor: invalid points");
         }
     }
 
@@ -115,11 +115,14 @@ bool Square::checkValidPointsSquare(const std::vector<Coord> & points)
         double sideLength2 = (sqrt(pow(points[(nextIndex + 1) % 4].x - points[nextIndex].x, 2) +
                                  pow(points[(nextIndex + 1) % 4].y - points[nextIndex].y, 2)));
 
-        if ((round(sideLength1) != round(sideLength2) &&
-            (!(abs(sideLength1 - sideLength2) < EPS) &&
-            !(abs(sideLength2 - sideLength1) < EPS)))) {
+        double angle1 = atan2(points[nextIndex].y - points[i].y,
+                                 points[nextIndex].x - points[i].x);
+        double angle2 = atan2(points[nextIndex + 1].y - points[nextIndex].y,
+                                 points[nextIndex + 1].x - points[nextIndex].x);
+
+        if ((!(abs(sideLength2 - sideLength1) < EPS)) && (!(fabs(angle1 - angle2) < EPS))) {
             allSidesEqual = false;
-            break; 
+            break;
         }
 
 
