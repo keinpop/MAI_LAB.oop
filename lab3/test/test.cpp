@@ -134,7 +134,7 @@ TEST(test_07, checkValidPointsSquareTest)
     test1.push_back(s2);
     test1.push_back(s3);
     test1.push_back(s4);
-    ASSERT_THROW(Square sq(test1), std::range_error);
+    ASSERT_THROW(Square sq(test1), std::invalid_argument);
 }
 
 TEST(test_08, OperatorDoubleTest)
@@ -195,7 +195,7 @@ TEST(test_12, checkValidPointsTriangleTest)
     test1.push_back(t1);
     test1.push_back(t2);
     test1.push_back(t3);
-    ASSERT_THROW(Triangle tr(test1), std::range_error);
+    ASSERT_THROW(Triangle tr(test1), std::invalid_argument);
 }
 
 TEST(test_13, TriangleOperatorCopyLvalueTest)
@@ -450,7 +450,7 @@ TEST(test_26, checkValidPointsOctagonTest)
     test1.push_back(oc7);
     test1.push_back(oc8);
     
-    ASSERT_THROW(Octagon oc(test1), std::range_error);
+    ASSERT_THROW(Octagon oc(test1), std::invalid_argument);
 }
 
 TEST(test_27, OctagonOperatorCopyLvalueTest)

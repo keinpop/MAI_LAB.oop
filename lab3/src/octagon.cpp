@@ -19,6 +19,8 @@ Octagon::Octagon(const std::vector<Coord> & points)
     }
 }
 
+
+
 Octagon::Octagon(const Octagon & other) noexcept
 {
     _points = other._points;
