@@ -45,6 +45,7 @@ DArray<T>::~DArray() noexcept
     _size = 0;
     _capacity = 0;
     delete[] _array;
+    _array = nullptr;
 }
 
 template <class T>
@@ -80,7 +81,7 @@ void DArray<T>::deleteToIndex(size_t index)
 }
 
 template <class T>
-T & DArray<T>::operator[](size_t index)
+T & DArray<T>::operator[](size_t index) const
 {
     if (index >= _size) {
         throw std::range_error("Error! DArray operator[]: Invalid index");

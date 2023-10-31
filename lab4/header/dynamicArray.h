@@ -20,7 +20,7 @@ public:
     void pushBack(const T & figure);
     void deleteToIndex(size_t index);
 
-    T & operator[](size_t index);
+    T & operator[](size_t index) const;
 
     size_t getSize() const;
 
