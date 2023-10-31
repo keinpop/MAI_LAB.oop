@@ -1,11 +1,11 @@
-#include "./header/dinamicArray.h"
+#include "./header/figure.h"
+
 
 int main()
 {
-    DArray<int> a;
-    DArray<int> bc(a);
-    DArray<int> c;
-    DArray<int> d = std::move(bc);
+    Figure<double> a {{1, 2}, {3, 4}, {5, 6}};
     
+    std::cout << a;
+
     return 0;
 }

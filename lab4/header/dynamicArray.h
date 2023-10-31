@@ -33,9 +33,9 @@ private:
     size_t calculateCapacity(const size_t minSize);
 
 private:
-    size_t _size;
-    size_t _capacity;
-    T* _array;
+    size_t _size = 0;
+    size_t _capacity = 0;
+    T* _array = nullptr;
 };
 
-#include "../src/dinamicArray.cpp"
+#include "../src/dynamicArray.cpp"

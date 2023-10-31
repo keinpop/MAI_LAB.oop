@@ -1,4 +1,4 @@
-#include "../header/dinamicArray.h"
+#include "../header/dynamicArray.h"
 
 template <class T>
 DArray<T>::DArray() : _size(0), _capacity(1)
@@ -22,7 +22,7 @@ DArray<T>::DArray(const std::initializer_list<T> & coord)
 template <class T>
 DArray<T>::DArray(const DArray & other)
 {
-    this->_array = new T[_capacity];
+    this->_array = new T[other._capacity];
     this->_size = other._size;
     this->_capacity = other._capacity;
 
@@ -42,12 +42,9 @@ DArray<T>::DArray(DArray&& other) noexcept
 template <class T>
 DArray<T>::~DArray() noexcept
 {
-    if (_capacity > 0) {
-        _size = 0;
-        _capacity = 0;
-        delete[] _array;
-        _array = nullptr;
-    }
+    _size = 0;
+    _capacity = 0;
+    delete[] _array;
 }
 
 template <class T>
