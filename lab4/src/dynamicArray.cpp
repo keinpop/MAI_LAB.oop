@@ -97,7 +97,6 @@ void DArray<T>::operator=(const DArray & other)
         return;
 
     if (other._capacity != this->_capacity) {
-        delete[] this->_array; // Освобождаем старый массив
 
         if (other._capacity > this->_capacity) {
             this->realocate(other._capacity);

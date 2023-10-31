@@ -3,8 +3,6 @@
 template <class T>
 Square<T>::Square()
 {
-    DArray<T> points;
-    this->_points = points;
     this->_name = "Square";
 }
 
@@ -20,6 +18,35 @@ Square<T>::Square(const DArray<std::pair<T, T>> & points)
         this->_name = "Square";
     }
 }
+
+template <class T>
+Square<T>::Square(const std::initializer_list<std::pair<T, T>> & points) 
+{
+    DArray<std::pair<T, T>> tmp(points);
+    if (points.size() != 4) {
+        throw std::length_error("Error! Square Constructor: invalid number of coordinates");
+    } else if (!checkValidPointsSquare(tmp)) {
+        throw std::invalid_argument("Error! Square Constructor: invalid points");
+    } else {
+        this->_points = points;
+        this->_name = "Square";
+    }
+}
+
+template <class T>
+Square<T>::Square(const Square<T> & other) noexcept
+{
+    this->_points = other._points;
+    this->_name = "Square";
+}
+
+template <class T>
+Square<T>::Square(Square<T> && other) noexcept
+{
+    std::swap(this->_points, other._points);
+    std::swap(this->_name, other._name);
+}
+
 
 template <class T>
 Square<T>::~Square() noexcept

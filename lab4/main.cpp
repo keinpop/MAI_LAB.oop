@@ -3,8 +3,8 @@
 
 int main()
 {
-    DArray<std::pair<double, double>> test1 {{1, 1}, {2, 1}, {2, 2}, {1, 2}};
-    Square<double> sq(test1);
-
-    return 0;
+    DArray<std::pair<int, int>> a{ {1, 1}, {2, 1}, {2, 2}, {1, 2} };
+    Square<int> sq{ {1, 1}, {2, 1}, {2, 2}, {1, 2} };
+    Square<int> b(std::move(sq));
+    std::cout << b.getNameFigure() << '\n';
 }

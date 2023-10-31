@@ -8,6 +8,9 @@ class Square final : public Figure<T>
 public:
     Square();
     Square(const DArray<std::pair<T, T>> & points);
+    Square(const std::initializer_list<std::pair<T, T>> & points);
+    Square(const Square<T> & other) noexcept;
+    Square(Square<T> && other) noexcept;
 
     ~Square() noexcept;
 
