@@ -29,11 +29,9 @@ public:
     friend std::ostream & operator<< <>(std::ostream & stream, const Figure&);
     friend std::istream & operator>> <>(std::istream & stream, Figure&);
 
-    virtual std::pair<T,T> calculateGeomCentr() const = 0;
-    
-    virtual operator double() const = 0;
+    DArray<std::pair<T, T>> getArray();
 
-    T calculateLengthOfSide() const;
+    double calculateLengthOfSide() const;
     std::string getNameFigure() const;
 
 protected:
@@ -41,4 +39,4 @@ protected:
     std::string _name = "unnamed";
 };
 
-#include "../src/figure.cpp"
+#include "../src/figure-src.h"

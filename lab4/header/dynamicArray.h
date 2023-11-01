@@ -5,6 +5,7 @@
 #include <cstring>
 #include <algorithm>
 #include <iostream>
+#include <memory>
 
 template <class T>
 class DArray 
@@ -26,16 +27,11 @@ public:
 
     void operator=(const DArray & other);
     void operator=(DArray&& other);
-    
-
-private:
-    void realocate(const size_t minSize);
-    size_t calculateCapacity(const size_t minSize);
 
 private:
     size_t _size = 0;
     size_t _capacity = 0;
-    T* _array = nullptr;
+    std::unique_ptr<T[]> _array;
 };
 
-#include "../src/dynamicArray.cpp"
+#include "../src/dynamicArray-src.h"

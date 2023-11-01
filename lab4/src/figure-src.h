@@ -50,7 +50,13 @@ std::istream & operator>>(std::istream & stream, Figure<T> & fig)
 }
 
 template <class T>
-T Figure<T>::calculateLengthOfSide() const
+DArray<std::pair<T, T>> Figure<T>::getArray()
+{
+    return _points._array;
+}
+
+template <class T>
+double Figure<T>::calculateLengthOfSide() const
 {
     return sqrt(pow(this->_points[0].first - this->_points[1].first, 2) + 
         pow(this->_points[0].second - this->_points[1].second, 2));
