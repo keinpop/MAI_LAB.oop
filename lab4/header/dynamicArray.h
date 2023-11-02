@@ -18,7 +18,7 @@ public:
 
     ~DArray() noexcept;
 
-    void pushBack(const T & figure);
+    void pushBack(const T & element);
     void deleteToIndex(size_t index);
 
     T & operator[](size_t index) const;
