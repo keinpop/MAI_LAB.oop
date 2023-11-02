@@ -55,14 +55,17 @@ int main()
 
     // std::cout << (oc2 == oc3) ? true : false;
 
-    DArray<Figure<double>> array;
-    array.pushBack(sq1);
-    array.pushBack(tr3);
-    array.pushBack(oc2);
+    DArray<Figure<double>*> array;
+    array.pushBack(&sq1);
+    array.pushBack(&tr3);
+    array.pushBack(&oc2);
 
-    std::cout << array[0] << "\n" << array[1] << "\n" << array[2] << std::endl;
+    std::cout << (double)*array[0] << "\n" << (double)*array[1] << "\n" << (double)*array[2] << std::endl;
     std::cout << calcualteAllArea(array) << std::endl;
     
+    printAllCoordArraysFigure(array);
 
+    array.deleteToIndex(1);
+    printAllCoordArraysFigure(array);
     return 0;
 }

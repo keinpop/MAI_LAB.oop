@@ -29,6 +29,9 @@ public:
     friend std::ostream & operator<< <>(std::ostream & stream, const Figure&);
     friend std::istream & operator>> <>(std::istream & stream, Figure&);
 
+    virtual operator double() const = 0;
+    virtual std::pair<T, T> calculateGeomCentr() const = 0;
+
     DArray<std::pair<T, T>> getArray();
 
     double calculateLengthOfSide() const;
