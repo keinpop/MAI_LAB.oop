@@ -27,45 +27,21 @@ int main()
     // Coord oc7 = {3, 0};
     // Coord oc8 = {4, 1};
 
-    DArray<std::pair<double, double>> a{ {1, 1}, {2, 1}, {2, 2}, {1, 2} };
-    // DArray<std::pair<double, double>> b(std::move(a));
+    Square<double> sq;
+    std::cout << "Enter square: " << std::endl;
+    std::cin >> sq;
+    Triangle<double> tr;
+    std::cout << "Enter triangle: " << std::endl;
+    std::cin >> tr;
+    Octagon<double> oc;
+    std::cout << "Enter octagon: " << std::endl;
+    std::cin >> oc;
     
-    Square<double> sq1(a);
-    
-    // std::cout << (sq2 == sq) ? true : false;
-    // std::cout << a.getSize()<< std::endl;
-
-    // Triangle<double> tr1;
-    // Triangle<double> tr2 {{0, 1}, {1, 0}, {0.5, 2}};
-    DArray<std::pair<double, double>> b{ {0, 1}, {1, 0}, {0.5, 2} };
-    Triangle<double> tr3(b);
-
-    // std::cout << tr2.calculateGeomCentr().first << ' ' << tr2.calculateGeomCentr().second 
-    //     << '\n' << tr2.calculateLengthOfSide() << '\n'
-    //     << double(tr2) << std::endl;
-
-    // DArray<std::pair<double, double>> a {{4, 3}, {3, 4}, {1, 4}, {0, 3}, {0, 1}, {1, 0}, {3, 0}, {4, 1}};
-    // Octagon<double> oc1;
-    Octagon<double> oc2 { {4, 3}, {3, 4}, {1, 4}, {0, 3}, {0, 1}, {1, 0}, {3, 0}, {4, 1} };
-    // Octagon<double> oc3(a);
-    
-    // std::cout << oc2.calculateGeomCentr().first << ' ' << oc2.calculateGeomCentr().second 
-    //     << '\n' << oc2.calculateLengthOfSide() << '\n'
-    //     << double(oc2) << std::endl;
-
-    // std::cout << (oc2 == oc3) ? true : false;
-
-    DArray<Figure<double>*> array;
-    array.pushBack(&sq1);
-    array.pushBack(&tr3);
-    array.pushBack(&oc2);
-
-    std::cout << (double)*array[0] << "\n" << (double)*array[1] << "\n" << (double)*array[2] << std::endl;
-    std::cout << calcualteAllArea(array) << std::endl;
-    
+    DArray<Figure<double>*> array{&sq, &tr, &oc};
     printAllCoordArraysFigure(array);
-
-    array.deleteToIndex(1);
-    printAllCoordArraysFigure(array);
+    std::cout << "Sum of areas figures in array: " 
+        << calcualteAllArea(array) << std::endl;
+    printAllCoordGeomCenter(array);
+    
     return 0;
 }

@@ -28,6 +28,8 @@ public:
     void operator=(const DArray & other);
     void operator=(DArray&& other);
 
+    bool operator==(const DArray & other) const;
+
 private:
     size_t _size = 0;
     size_t _capacity = 0;

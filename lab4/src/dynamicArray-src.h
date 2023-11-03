@@ -108,6 +108,22 @@ void DArray<T>::operator=(DArray&& other)
 }
 
 template <class T>
+bool DArray<T>::operator==(const DArray & other) const
+{
+    if (_size != other._size) {
+        return false;
+    }
+
+    for (size_t i = 0; i < _size; ++i) {
+        if (_array[i] != other._array[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+template <class T>
 size_t DArray<T>::getSize() const
 {
     return _size;
