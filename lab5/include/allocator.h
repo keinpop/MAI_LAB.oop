@@ -8,57 +8,80 @@ template <typename T>
 class Allocator
 {
 public:
-    using value_type = T;
-    using pointer = T *;
-    using const_pointer = const T *;
-    using size_type = size_t;
-
     Allocator();
 
-    //~Allocator();
+    ~Allocator();
 
     T* allocate(size_t n);
     void deallocate(T* ptr, size_t n);
+    void free();
+
+    template <class U>
+    struct rebind 
+    {
+        using other = Allocator<U>;
+    };
+
+    template <typename... Args>
+    void construct(T* p, Args&& ...args);
+
+    void destroy(T* ptr);
 
 private:
-    std::stack<T*> _used_blocks;
-    std::stack<void* > _free_blocks;
-    size_t _alloc_count;
+    std::stack<T* > _used_blocks;
+    std::stack<T* > _free_blocks;
 };
 
 template <typename T>
-Allocator<T>::Allocator() : 
-    _alloc_count(0) {}
+template <typename... Args>
+void Allocator<T>::construct(T* p, Args&& ...args)
+{
+    new (p) T(std::forward<Args>(args)...);
+}
+
+template <typename T>
+Allocator<T>::Allocator() {}
+
+template <typename T>
+Allocator<T>::~Allocator() 
+{   
+    this->free();
+}
 
 template <typename T>
 T* Allocator<T>::allocate(size_t n)
 {
+    if (_free_blocks.size() != 0 && n == 1) { 
+        T* tmp = _free_blocks.top();
+        _free_blocks.pop(); 
+        return tmp;
+    }
     T* ptr = (T*)(::operator new(sizeof(T) * n));
     _used_blocks.push(ptr);
 
-    for (size_t i = _alloc_count; i < _alloc_count + n; ++i) {
-        _free_blocks.push(ptr + i * sizeof(T));
-    }
-
-    _alloc_count += n;
-    
     return ptr;
 }
 
 template <typename T>
 void Allocator<T>::deallocate(T* ptr, size_t n)
 {
-    std::stack<void* > tmp;
-
-    for (long long i = 0; i > _alloc_count - n; --i) {
-        tmp.push(_free_blocks.top());
-        _free_blocks.pop();
-    }
-
-    void* delEl = _free_blocks.top();
-    delete delEl;
-
     for (size_t j = 0; j < n; ++j) {
-        _free_blocks.push(tmp.pop());
+        _free_blocks.push(ptr + j * sizeof(T)); 
     }
+}
+
+template <typename T>
+void Allocator<T>::free()
+{
+    for (size_t i = 0 ; i < _used_blocks.size() ; ++i) {
+        T* tmp = _used_blocks.top();
+        _used_blocks.pop();
+        delete tmp;
+    }
+}
+
+template <typename T>
+void Allocator<T>::destroy(T* ptr)
+{
+    ptr->~T();
 }
