@@ -8,12 +8,17 @@ template <typename T>
 class Allocator
 {
 public:
+    using value_type = T;
+    using pointer = T*;
+    using const_pointer = const T*;
+    using size_type = std::size_t;
+
     Allocator();
 
     ~Allocator();
 
-    T* allocate(size_t n);
-    void deallocate(T* ptr, size_t n);
+    pointer allocate(size_type n);
+    void deallocate(pointer ptr, size_type n);
     void free();
 
     template <class U>
@@ -23,9 +28,9 @@ public:
     };
 
     template <typename... Args>
-    void construct(T* p, Args&& ...args);
+    void construct(pointer p, Args&& ...args);
 
-    void destroy(T* ptr);
+    void destroy(pointer ptr);
 
 private:
     std::stack<T* > _used_blocks;
@@ -34,7 +39,7 @@ private:
 
 template <typename T>
 template <typename... Args>
-void Allocator<T>::construct(T* p, Args&& ...args)
+void Allocator<T>::construct(pointer p, Args&& ...args)
 {
     new (p) T(std::forward<Args>(args)...);
 }
@@ -49,7 +54,7 @@ Allocator<T>::~Allocator()
 }
 
 template <typename T>
-T* Allocator<T>::allocate(size_t n)
+T* Allocator<T>::allocate(size_type n)
 {
     if (_free_blocks.size() != 0 && n == 1) { 
         T* tmp = _free_blocks.top();
@@ -63,7 +68,7 @@ T* Allocator<T>::allocate(size_t n)
 }
 
 template <typename T>
-void Allocator<T>::deallocate(T* ptr, size_t n)
+void Allocator<T>::deallocate(pointer ptr, size_type n)
 {
     for (size_t j = 0; j < n; ++j) {
         _free_blocks.push(ptr + j * sizeof(T)); 
@@ -81,7 +86,7 @@ void Allocator<T>::free()
 }
 
 template <typename T>
-void Allocator<T>::destroy(T* ptr)
+void Allocator<T>::destroy(pointer ptr)
 {
     ptr->~T();
 }
