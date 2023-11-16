@@ -1,17 +1,11 @@
 #include "./include/allocator.h"
-#include "./include/iterator_FL.h"
-
-#include <map>
-#include <unordered_map>
+#include "./include/forward_list.h"
 
 int main()
 {
-    std::map<int, int, std::less<int>, Allocator<std::pair<const int, int>>> a;
-    a[0] = 1;
-    a[1] = 2;
-    for (const auto & p : a) {
-        std::cout << p.first << ' ' << p.second << std::endl;
-    }
-
-    return 0;
+    Forward_List<int> a{1, 2, 3};
+    a.emplaceFront(0);
+    // a.emplaceFront(-2);
+    std::cout << a << std::endl;
+    std::cout << "OK" << std::endl;
 }

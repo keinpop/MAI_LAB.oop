@@ -15,10 +15,11 @@ public:
 
     Node<T>* getNode() const;
 
-    Iterator<T> operator++();
-    Iterator<T> operator+(int64_t num);
+    Iterator<T> &operator++();
+    Iterator<T> &operator+(int64_t num);
 
-    T & operator*();
+    const T & operator*() const;
+    T & operator->() const;
     
     bool operator==(const Iterator<T> & other) const;
     bool operator!=(const Iterator<T> & other) const;
@@ -40,21 +41,21 @@ Node<T>* Iterator<T>::getNode() const
 }
 
 template <typename T>
-Iterator<T> Iterator<T>::operator++()
+Iterator<T> &Iterator<T>::operator++()
 {
     if (_node) {
-        _node = _node->_next;
+        _node = _node->getNext();
     }
 
     return *this;
 }
 
 template <typename T>
-Iterator<T> Iterator<T>::operator+(int64_t num)
+Iterator<T> &Iterator<T>::operator+(int64_t num)
 {
     if (num > 0) {
         while (num && _node) {
-            _node = _node->_next;
+            _node = _node->getNext();
             --num;
         }
     }
@@ -63,9 +64,15 @@ Iterator<T> Iterator<T>::operator+(int64_t num)
 }
 
 template <typename T>
-T & Iterator<T>::operator*()
+const T & Iterator<T>::operator*() const
 {
-    return _node->_value;
+    return _node->getValue();
+}
+
+template <typename T>
+T & Iterator<T>::operator->() const
+{
+    return _node->getValue();
 }
 
 template <typename T>
@@ -85,16 +92,17 @@ class ConstIterator
 {
 public:
     ConstIterator() = default;
-    explicit ConstIterator(Node<T>* node);
+    explicit ConstIterator(const Node<T>* node);
 
     ~ConstIterator() = default;
 
-    Node<T>* getNode() const;
+    const Node<T>* getNode() const;
 
-    ConstIterator<T> operator++();
-    ConstIterator<T> operator+(int64_t num);
+    const ConstIterator<T> &operator++();
+    const ConstIterator<T> &operator+(int64_t num);
 
     const T & operator*() const;  
+    const T & operator->() const;
     
     bool operator==(const ConstIterator<T> & other) const;
     bool operator!=(const ConstIterator<T> & other) const;
@@ -104,19 +112,19 @@ private:
 };
 
 template <typename T>
-ConstIterator<T>::ConstIterator(Node<T>* node)
+ConstIterator<T>::ConstIterator(const Node<T>* node)
 {
     _node = node;
 }
 
 template <typename T>
-Node<T>* ConstIterator<T>::getNode() const 
+const Node<T>* ConstIterator<T>::getNode() const 
 {
     return this->_node;
 }
 
 template <typename T>
-ConstIterator<T> ConstIterator<T>::operator++()
+const ConstIterator<T> &ConstIterator<T>::operator++()
 {
     if (_node) {
         _node = _node->_next;
@@ -126,7 +134,7 @@ ConstIterator<T> ConstIterator<T>::operator++()
 }
 
 template <typename T>
-ConstIterator<T> ConstIterator<T>::operator+(int64_t num)
+const ConstIterator<T> &ConstIterator<T>::operator+(int64_t num)
 {
     if (num > 0) {
         while (num && _node) {
@@ -141,7 +149,13 @@ ConstIterator<T> ConstIterator<T>::operator+(int64_t num)
 template <typename T>
 const T & ConstIterator<T>::operator*() const
 {
-    return _node->_value;
+    return _node->getValue();
+}
+
+template <typename T>
+const T & ConstIterator<T>::operator->() const
+{
+    return _node->getValue();
 }
 
 template <typename T>
