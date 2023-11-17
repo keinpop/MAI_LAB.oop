@@ -18,19 +18,25 @@ public:
     Forward_List(Forward_List && other);
 
     ~Forward_List();
+    
+    size_t size() const;
+    bool empty() const;
 
     void pushFront(const T & val);
     template<typename... Args>
     void emplaceFront(const T & first, const Args &...args);
 
+    void popFront();
+
+    void clear() noexcept;
+
     Iterator<T> begin() const;
     Iterator<T> end() const;
+    ConstIterator<T> CBegin() const;
+    ConstIterator<T> CEnd() const;
     
     template<typename U>
     friend std::ostream & operator<<(std::ostream & stream, const Forward_List<U> & l);
-
-    size_t size() const;
-    bool empty() const;
 
 private:
     Allocator _alloc;
@@ -126,6 +132,18 @@ Forward_List<T, Allocator>::~Forward_List()
     _alloc.free();
 }
 
+template <typename T, class Allocator>
+size_t Forward_List<T, Allocator>::size() const
+{
+    return this->_size;
+}
+
+template <typename T, class Allocator>
+bool Forward_List<T, Allocator>::empty() const
+{
+    return (this->_size == 0);
+}
+
 template<typename T, typename Allocator>
 void Forward_List<T, Allocator>::pushFront(const T & val)
 {
@@ -147,14 +165,42 @@ void Forward_List<T, Allocator>::emplaceFront(const T & fValue, const Args &...a
         } else {
             return;
         }
-    } 
+    } else {
+        ptr->setNext(_head);
+        _head = ptr;
+        ++_size;
+        
+        if constexpr (sizeof...(args) > 0) {
+            emplaceFront(args...);
+        }
+    }
+}
 
-    ptr->setNext(_head);
-    _head = ptr;
-    ++_size;
+template<typename T, typename Allocator>
+void Forward_List<T, Allocator>::popFront()
+{
+    if (this->empty()) {
+        throw std::length_error("Error! Forward_List popFront: list empty");
+    }
 
-    if constexpr (sizeof...(args) > 0) {
-        emplaceFront(args...);
+    Node<T>* delNode = _head;
+
+    if (this->size() > 1) {
+        _head = _head->getNext();
+    } else {
+        _head = nullptr;
+    }
+
+    _alloc.deallocate(delNode, 1);
+    --_size;
+}
+
+template<typename T, typename Allocator>
+void Forward_List<T, Allocator>::clear() noexcept
+{
+    size_t size = this->size();
+    for (size_t i = 0; i < size; ++i) {
+        this->popFront();
     }
 }
 
@@ -171,6 +217,19 @@ Iterator<T> Forward_List<T, Allocator>::end() const
     return (this->begin() + (this->size()));
 }
 
+template<typename T, typename Allocator>
+ConstIterator<T> Forward_List<T, Allocator>::CBegin() const
+{
+    ConstIterator<T> begin(_head);
+    return begin;
+}
+
+template<typename T, typename Allocator>
+ConstIterator<T> Forward_List<T, Allocator>::CEnd() const
+{
+    return (this->CBegin() + (this->size()));
+}
+
 template<typename U>
 std::ostream & operator<<(std::ostream & stream, const Forward_List<U> & l)
 {
@@ -178,26 +237,14 @@ std::ostream & operator<<(std::ostream & stream, const Forward_List<U> & l)
         throw std::length_error("Error! Forward_List operator<<: list empty");
     }
 
-    Iterator<U> it = l.begin();
-
-    while (it != l.end()) {
-        stream << *it << '\t';
-        ++it;
+    size_t size = l.size();
+    Node<U>* tmp = l._head;
+    for (size_t i = 0; i < size; ++i) {
+        stream << tmp->getValue() << '\t';
+        tmp = tmp->getNext();
     }
 
     stream << '\n';
 
     return stream;
-}
-
-template <typename T, class Allocator>
-size_t Forward_List<T, Allocator>::size() const
-{
-    return this->_size;
-}
-
-template <typename T, class Allocator>
-bool Forward_List<T, Allocator>::empty() const
-{
-    return (this->_size == 0);
 }

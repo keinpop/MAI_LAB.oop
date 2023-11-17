@@ -78,8 +78,8 @@ void Allocator<T>::deallocate(pointer ptr, size_type n)
 template <typename T>
 void Allocator<T>::free()
 {
-    std::cout << "Size _used_blocks = " << _used_blocks.size() << '\n';
-    for (size_t i = 0 ; i < _used_blocks.size() ; ++i) {
+    size_t n = _used_blocks.size();
+    for (size_t i = 0 ; i < n ; ++i) {
         T* tmp = _used_blocks.top();
         _used_blocks.pop();
         delete tmp;

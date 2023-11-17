@@ -19,7 +19,7 @@ public:
     Iterator<T> &operator+(int64_t num);
 
     const T & operator*() const;
-    T & operator->() const;
+    T operator->() const;
     
     bool operator==(const Iterator<T> & other) const;
     bool operator!=(const Iterator<T> & other) const;
@@ -70,7 +70,7 @@ const T & Iterator<T>::operator*() const
 }
 
 template <typename T>
-T & Iterator<T>::operator->() const
+T Iterator<T>::operator->() const
 {
     return _node->getValue();
 }
@@ -108,7 +108,7 @@ public:
     bool operator!=(const ConstIterator<T> & other) const;
  
 private:
-    Node<T>* _node;
+    const Node<T>* _node;
 };
 
 template <typename T>
@@ -127,7 +127,7 @@ template <typename T>
 const ConstIterator<T> &ConstIterator<T>::operator++()
 {
     if (_node) {
-        _node = _node->_next;
+        _node = _node->getNext();
     }
 
     return *this;
@@ -138,7 +138,7 @@ const ConstIterator<T> &ConstIterator<T>::operator+(int64_t num)
 {
     if (num > 0) {
         while (num && _node) {
-            _node = _node->_next;
+            _node = _node->getNext();
             --num;
         }
     }
