@@ -70,6 +70,10 @@ T* Allocator<T>::allocate(size_type n)
 template <typename T>
 void Allocator<T>::deallocate(pointer ptr, size_type n)
 {
+    if (_free_blocks.size() > _used_blocks.size()) {
+        throw std::length_error("Error! deallocate: you want delete unallocate blocks");
+    }
+
     for (size_t j = 0; j < n; ++j) {
         _free_blocks.push(ptr + j * sizeof(T)); 
     }
