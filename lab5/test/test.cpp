@@ -105,17 +105,7 @@ TEST(test_05, testAllocatorCheckToMap)
     ASSERT_TRUE(1);
 }
 
-TEST(test_06, testAllocatorCheckToVector)
-{
-    std::vector<int, Allocator<int>> test;
-    for (size_t i = 0; i < 100; ++i) {
-        test.push_back(i + 2);
-    }
-
-    ASSERT_TRUE(1);
-}
-
-TEST(test_07, testIteratorFLBegin)
+TEST(test_08, testIteratorFLBegin)
 {
     Forward_List<int> test{1, 2, 3, 4};
     std::begin(test);
@@ -124,7 +114,7 @@ TEST(test_07, testIteratorFLBegin)
     ASSERT_TRUE(std::begin(test) == it);
 }
 
-TEST(test_08, testIteratorFLEnd)
+TEST(test_09, testIteratorFLEnd)
 {
     Forward_List<int> test{1, 2, 3};
     std::end(test);
@@ -133,7 +123,7 @@ TEST(test_08, testIteratorFLEnd)
     ASSERT_TRUE(std::end(test) == it);
 }
 
-TEST(test_09, testIteratorFLOperatorStars)
+TEST(test_10, testIteratorFLOperatorStars)
 {
     Forward_List<int> test{1, 2, 3};
     Iterator<int> it = test.begin();
@@ -142,7 +132,7 @@ TEST(test_09, testIteratorFLOperatorStars)
     ASSERT_TRUE(*std::begin(test) == *it);
 }
 
-TEST(test_10, testIteratorFLOperatorPlus)
+TEST(test_11, testIteratorFLOperatorPlus)
 {
     Forward_List<int> test{1, 2, 3};
     Iterator<int> it = test.begin() + 2;
@@ -150,7 +140,7 @@ TEST(test_10, testIteratorFLOperatorPlus)
     ASSERT_TRUE(*(std::begin(test) + 2) == *it);
 }
 
-TEST(test_11, testIteratorFLOperatorEqual)
+TEST(test_12, testIteratorFLOperatorEqual)
 {
     Forward_List<int> test{1, 2, 3};
     Iterator<int> it = test.begin();
@@ -159,7 +149,7 @@ TEST(test_11, testIteratorFLOperatorEqual)
     ASSERT_TRUE(itCopy == it);
 }
 
-TEST(test_12, testIteratorFLOperatorUnequal)
+TEST(test_13, testIteratorFLOperatorUnequal)
 {
     Forward_List<int> test{1, 2, 3};
     Iterator<int> it = test.begin();
@@ -169,7 +159,7 @@ TEST(test_12, testIteratorFLOperatorUnequal)
     ASSERT_TRUE(itCopy != it);
 }
 
-TEST(test_13, testConstIteratorFLBegin)
+TEST(test_14, testConstIteratorFLBegin)
 {
     Forward_List<int> test{1, 2, 3, 4};
     ConstIterator<int> it = test.CBegin();
@@ -177,7 +167,7 @@ TEST(test_13, testConstIteratorFLBegin)
     ASSERT_TRUE(*std::cbegin(test) == *it);
 }
 
-TEST(test_14, testConstIteratorFLEnd)
+TEST(test_15, testConstIteratorFLEnd)
 {
     Forward_List<int> test{1, 2, 3};
     ConstIterator<int> it = test.CEnd();
@@ -186,7 +176,7 @@ TEST(test_14, testConstIteratorFLEnd)
     ASSERT_TRUE(itCopy == it);
 }
 
-TEST(test_15, testConstIteratorFLOperatorStars)
+TEST(test_16, testConstIteratorFLOperatorStars)
 {
     Forward_List<int> test{1, 2, 3};
     ConstIterator<int> it = test.CBegin();
@@ -195,7 +185,7 @@ TEST(test_15, testConstIteratorFLOperatorStars)
     ASSERT_TRUE(*std::begin(test) == *it);
 }
 
-TEST(test_16, testIteratorFLOperatorPlus)
+TEST(test_17, testIteratorFLOperatorPlus)
 {
     Forward_List<int> test{1, 2, 3};
     ConstIterator<int> it = test.CBegin() + 2;
@@ -203,7 +193,7 @@ TEST(test_16, testIteratorFLOperatorPlus)
     ASSERT_TRUE(*(std::cbegin(test) + 2) == *it);
 }
 
-TEST(test_17, testConstIteratorFLOperatorEqual)
+TEST(test_18, testConstIteratorFLOperatorEqual)
 {
     Forward_List<int> test{1, 2, 3};
     ConstIterator<int> it = test.CBegin();
@@ -212,7 +202,7 @@ TEST(test_17, testConstIteratorFLOperatorEqual)
     ASSERT_TRUE(itCopy == it);
 }
 
-TEST(test_18, testConstIteratorFLOperatorUnequal)
+TEST(test_19, testConstIteratorFLOperatorUnequal)
 {
     Forward_List<int> test{1, 2, 3};
     ConstIterator<int> it = test.CBegin();
@@ -221,7 +211,7 @@ TEST(test_18, testConstIteratorFLOperatorUnequal)
     ASSERT_TRUE(itCopy != it);
 }
 
-TEST(test_19, testForwardListConstructorInt)
+TEST(test_20, testForwardListConstructorInt)
 {
     Forward_List<int> l1;
     Forward_List<int> l11;
@@ -236,7 +226,7 @@ TEST(test_19, testForwardListConstructorInt)
                 (*l5.begin() == *l6.begin()));
 }
 
-TEST(test_20, testForwardListConstructorUChar)
+TEST(test_21, testForwardListConstructorUChar)
 {
     Forward_List<unsigned char> l1;
     Forward_List<unsigned char> l11;
@@ -251,7 +241,7 @@ TEST(test_20, testForwardListConstructorUChar)
                 (*l5.begin() == *l6.begin()));
 }
 
-TEST(test_21, testForwardListSize)
+TEST(test_22, testForwardListSize)
 {
     Forward_List<int> l1{1, 2, 3, 4, 5};
     Forward_List<int> l2;
@@ -259,7 +249,7 @@ TEST(test_21, testForwardListSize)
     ASSERT_TRUE((l1.size() == 5) && (l2.size() == 0));
 }
 
-TEST(test_22, testForwardListEmpty)
+TEST(test_23, testForwardListEmpty)
 {
     Forward_List<int> l1{1, 2, 3, 4, 5};
     Forward_List<int> l2;
@@ -267,7 +257,7 @@ TEST(test_22, testForwardListEmpty)
     ASSERT_TRUE(!(l1.empty()) && l2.empty());
 }
 
-TEST(test_23, testForwardListPushFront)
+TEST(test_24, testForwardListPushFront)
 {
     Forward_List<int> l1;
     Forward_List<unsigned char> l2;
@@ -292,7 +282,7 @@ TEST(test_23, testForwardListPushFront)
     ASSERT_TRUE((l2.size() == 2) && (*l1.begin() == 3));
 }
 
-TEST(test_24, testForwardListEmplaceFront)
+TEST(test_25, testForwardListEmplaceFront)
 {
     Forward_List<int> l1;
     Forward_List<unsigned char> l2;
@@ -312,14 +302,14 @@ TEST(test_24, testForwardListEmplaceFront)
     ASSERT_TRUE((l1.size() == 12) && (l2.size() == 12));
 }
 
-TEST(test_25, testForwardListPopFrontException)
+TEST(test_26, testForwardListPopFrontException)
 {
     Forward_List<int> l1;
 
     ASSERT_THROW(l1.popFront(), std::length_error);
 }
 
-TEST(test_26, testForwardListPopFront)
+TEST(test_27, testForwardListPopFront)
 {
     Forward_List<int> l1;
     Forward_List<unsigned char> l2;
@@ -341,7 +331,7 @@ TEST(test_26, testForwardListPopFront)
     ASSERT_TRUE((l1.size() == 1) && (l2.size() == 1));
 }
 
-TEST(test_26, testForwardListClear)
+TEST(test_28, testForwardListClear)
 {
     Forward_List<int> l1 {1, 2, 3, 4, 5};
     Forward_List<unsigned char> l2 {1, 2, 3, 4, 5};

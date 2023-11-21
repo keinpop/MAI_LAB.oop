@@ -109,20 +109,8 @@ Forward_List<T, Allocator>::Forward_List(const Forward_List & other)
 template <typename T, class Allocator>
 Forward_List<T, Allocator>::Forward_List(Forward_List && other)
 {
-    Node<T>* ptr = _alloc.allocate(1);
-    ptr = other._head;
-    this->_head = ptr;
-
-    Node<T>* tmp = other._head;
-    tmp = tmp->getNext();
-
-    for (size_t i = 1; i < other.size(); ++i) {
-        ptr = ptr->getNext();
-        ptr = _alloc.allocate(1);
-        ptr = other._head;
-        tmp = tmp->getNext();
-    }
-
+    this->_head = other._head;
+    other._head = nullptr;
     _size = other.size();
 }
 

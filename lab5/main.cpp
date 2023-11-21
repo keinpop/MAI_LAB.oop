@@ -1,6 +1,7 @@
 #include "./include/allocator.h"
 #include "./include/forward_list.h"
 #include <map>
+#include <vector>
 
 int fact(int dig) {
     int res = 1;
@@ -70,6 +71,4 @@ int main()
     }
 
     std::cout << "\tEND\n";
-
-    return 0;
 }
