@@ -18,7 +18,7 @@ public:
     Iterator<T> &operator++();
     Iterator<T> &operator+(int64_t num);
 
-    const T & operator*() const;
+    T operator*() const;
     T operator->() const;
     
     bool operator==(const Iterator<T> & other) const;
@@ -64,7 +64,7 @@ Iterator<T> &Iterator<T>::operator+(int64_t num)
 }
 
 template <typename T>
-const T & Iterator<T>::operator*() const
+T Iterator<T>::operator*() const
 {
     return _node->getValue();
 }

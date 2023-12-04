@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <cstdint>
-#include <stack>
+#include <deque>
 
 template <typename T>
 class Allocator
@@ -28,18 +28,18 @@ public:
     };
 
     template <typename... Args>
-    void construct(pointer p, Args&& ...args);
+    void construct(pointer p, Args&&... args);
 
     void destroy(pointer ptr);
 
 private:
-    std::stack<T* > _used_blocks;
-    std::stack<T* > _free_blocks;
+    std::deque<T*> _used_blocks;
+    std::deque<T*> _free_blocks;
 };
 
 template <typename T>
 template <typename... Args>
-void Allocator<T>::construct(pointer p, Args&& ...args)
+void Allocator<T>::construct(pointer p, Args&&... args)
 {
     new (p) T(std::forward<Args>(args)...);
 }
@@ -56,13 +56,13 @@ Allocator<T>::~Allocator()
 template <typename T>
 T* Allocator<T>::allocate(size_type n)
 {
-    if (_free_blocks.size() != 0 && n == 1) { 
-        T* tmp = _free_blocks.top();
-        _free_blocks.pop(); 
+    if (!_free_blocks.empty() && n == 1) { 
+        T* tmp = _free_blocks.front();
+        _free_blocks.pop_front(); 
         return tmp;
     }
     T* ptr = (T*)(::operator new(sizeof(T) * n));
-    _used_blocks.push(ptr);
+    _used_blocks.push_back(ptr);
 
     return ptr;
 }
@@ -71,11 +71,11 @@ template <typename T>
 void Allocator<T>::deallocate(pointer ptr, size_type n)
 {
     if (_free_blocks.size() > _used_blocks.size()) {
-        throw std::length_error("Error! deallocate: you want delete unallocate blocks");
+        throw std::length_error("Error! deallocate: you want to delete unallocated blocks");
     }
 
     for (size_t j = 0; j < n; ++j) {
-        _free_blocks.push(ptr + j * sizeof(T)); 
+        _free_blocks.push_back(ptr + j * sizeof(T)); 
     }
 }
 
@@ -83,10 +83,10 @@ template <typename T>
 void Allocator<T>::free()
 {
     size_t n = _used_blocks.size();
-    for (size_t i = 0 ; i < n ; ++i) {
-        T* tmp = _used_blocks.top();
-        _used_blocks.pop();
-        delete tmp;
+    for (size_t i = 0; i < n; ++i) {
+        T* tmp = _used_blocks.front();
+        _used_blocks.pop_front();
+        delete(tmp);
     }
 }
 
