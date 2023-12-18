@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./FightVisitor.h"
-#include "./HeroesPair.h"
+#include "./Heroes.h"
+#include <unordered_map>
 
 set_t battle(const set_t & array);
 std::ostream & operator<<(std::ostream & os, const set_t & array);

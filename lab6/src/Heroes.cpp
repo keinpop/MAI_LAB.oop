@@ -15,6 +15,11 @@ std::string Heroes::getName() const
     return _name;
 }
 
+HeroesClass & Heroes::getType() 
+{
+    return _type;
+}
+
 void Heroes::subscribe(std::shared_ptr<IFightObserver> observer)
 {
     _obs.push_back(observer);

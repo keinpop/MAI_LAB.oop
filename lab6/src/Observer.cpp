@@ -15,7 +15,7 @@ void TextObserver::onFight(const std::shared_ptr<Heroes> attacker, const std::sh
         attacker->print();
         std::cout << "Victim - ";
         defender->print();
-    }
+    } 
 }
 
 std::shared_ptr<IFightObserver> FileObserver::get()
@@ -35,7 +35,7 @@ void FileObserver::onFight(const std::shared_ptr<Heroes> attacker, const std::sh
         file << (*attacker);
         file << (*defender);
         file.flush();
-    }
+    } 
     
     file.close();
 }

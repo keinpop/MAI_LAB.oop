@@ -27,13 +27,11 @@ public:
     ) = 0;
 };
 
-class Visitor 
+struct Visitor 
 {
-public:
-    virtual int visit(Squirrel & unit) = 0;
-    virtual int visit(Werewolf & unit) = 0;
-    virtual int visit(Druid & unit) = 0;
-    virtual int visit(HeroesPair & unit) = 0;
+    virtual bool visit(const std::shared_ptr<Squirrel>&) const = 0;
+    virtual bool visit(const std::shared_ptr<Druid>&) const = 0;
+    virtual bool visit(const std::shared_ptr<Werewolf>&) const = 0;
 };
 
 class Heroes : public std::enable_shared_from_this<Heroes>
@@ -46,6 +44,7 @@ public:
     virtual ~Heroes() = default;
 
     std::string getName() const;
+    HeroesClass & getType();
 
     void subscribe(std::shared_ptr<IFightObserver> obs);
     void fightNotify(const std::shared_ptr<Heroes> defender, bool win);
@@ -55,7 +54,7 @@ public:
     virtual void save(std::ostream & os);
     friend std::ostream & operator<<(std::ostream & os, Heroes & heroes);
 
-    virtual int accept(Visitor & visitor) = 0;
+    virtual int accept(const std::shared_ptr<Visitor>& attacker_visitor, const std::shared_ptr<Heroes>& attacker) = 0;
 
 protected:
     short int _x {0};

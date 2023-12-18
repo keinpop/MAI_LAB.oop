@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../header/Battle.h"
+#include "../header/FactoryHeroes.h"
 
 TEST(test_00, FabricTest)
 {
@@ -68,20 +69,7 @@ TEST(test_04, CloseTest)
     ASSERT_TRUE(a.isClose(f));
 }
 
-TEST(test_05, VisitTest)
-{
-
-    Squirrel sq(getRandNameSq(), 1, 100);
-    Druid dr(getRandNameDr(), 100, 1);
-    FightVisitor t;
-
-    ASSERT_TRUE(3 == t.visit(sq));
-    ASSERT_TRUE(3 == sq.accept(t));
-    ASSERT_TRUE(1 == t.visit(dr));
-    ASSERT_TRUE(1 == dr.accept(t));
-}
-
-TEST(test_06, NoDeathFighterTest)
+TEST(test_05, NoDeathFighterTest)
 {
 
     set_t array;
@@ -99,7 +87,7 @@ TEST(test_06, NoDeathFighterTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_07, DeathFighterTest)
+TEST(test_06, DeathFighterTest)
 {
     set_t array;
 
@@ -116,7 +104,7 @@ TEST(test_07, DeathFighterTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_08, SquirrelFightTest)
+TEST(test_07, SquirrelFightTest)
 {
     set_t array;
 
@@ -133,7 +121,7 @@ TEST(test_08, SquirrelFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_09, WerewolfFightTest)
+TEST(test_08, WerewolfFightTest)
 {
     set_t array;
 
@@ -150,7 +138,7 @@ TEST(test_09, WerewolfFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_10, DruidFightTest)
+TEST(test_09, DruidFightTest)
 {
     set_t array;
 
@@ -167,7 +155,7 @@ TEST(test_10, DruidFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_11, SquirrelWithWerewolfFightTest)
+TEST(test_10, SquirrelWithWerewolfFightTest)
 {
     set_t array;
 
@@ -183,7 +171,7 @@ TEST(test_11, SquirrelWithWerewolfFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_12, SquirrelWithDruidFightTest)
+TEST(test_11, SquirrelWithDruidFightTest)
 {
     set_t array;
 
@@ -199,7 +187,7 @@ TEST(test_12, SquirrelWithDruidFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_13, WerewolfWithSquirrelFightTest)
+TEST(test_12, WerewolfWithSquirrelFightTest)
 {
     set_t array;
 
@@ -215,7 +203,7 @@ TEST(test_13, WerewolfWithSquirrelFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_14, SquirrelWithDruidFightTest)
+TEST(test_13, SquirrelWithDruidFightTest)
 {
     set_t array;
 
@@ -231,7 +219,7 @@ TEST(test_14, SquirrelWithDruidFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_15, DruidWithSquirrelFightTest)
+TEST(test_14, DruidWithSquirrelFightTest)
 {
     set_t array;
 
@@ -247,7 +235,7 @@ TEST(test_15, DruidWithSquirrelFightTest)
     EXPECT_TRUE(result);
 }
 
-TEST(test_16, DruidWithWerewolfFightTest)
+TEST(test_15, DruidWithWerewolfFightTest)
 {
     set_t array;
 

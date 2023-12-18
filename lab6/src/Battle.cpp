@@ -1,27 +1,28 @@
 #include "../header/Battle.h"
+#include "../header/FactoryHeroes.h"
+
+std::unordered_map<HeroesClass, std::shared_ptr<Visitor>> visitors = {
+    {DRUID, std::make_shared<SquirrelVisitor>()},
+    {SQUIRREL, std::make_shared<DruidVisitor>()},
+    {WEREWOLF, std::make_shared<WerewolfVisitor>()}
+};
 
 set_t battle(const set_t & array)
 {
-    set_t killBar;
+    set_t dead_list;
 
-    for (const auto & attacker : array) {
-        for (const auto & defender : array) {
-            if ((attacker != defender) && (attacker->isClose(defender))) {
-                HeroesPair fighters;
-                FightVisitor vis;
-                fighters.first = attacker;
-                fighters.second = defender;
-
-                int res = fighters.accept(vis);
-                
-                if (res == 1) {
-                    killBar.insert(defender);
+    for (const auto& attacker : array) {
+        for (const auto& defender : array) {
+            if (attacker != defender && attacker->isClose(defender) && dead_list.find(defender) == dead_list.end()) {
+                bool win = defender->accept(visitors[attacker->getType()], attacker);
+                if (win) {
+                    dead_list.insert(defender);
                 }
             }
         }
     }
 
-    return killBar;
+    return dead_list;
 }
 
 std::ostream & operator<<(std::ostream & os, const set_t & array)

@@ -2,6 +2,7 @@
 #include <random>
 #include <chrono>
 #include <thread>
+#include "./header/FactoryHeroes.h"
 
 int main()
 {

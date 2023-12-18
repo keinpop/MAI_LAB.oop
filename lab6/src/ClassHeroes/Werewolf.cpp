@@ -1,5 +1,18 @@
 #include "../../header/ClassHeroes/Werewolf.h"
 
+bool WerewolfVisitor::visit(const std::shared_ptr<Squirrel>& attacker) const {
+    return false;
+}
+
+bool WerewolfVisitor::visit(const std::shared_ptr<Druid>& attacker) const {
+    return true;
+}
+
+bool WerewolfVisitor::visit(const std::shared_ptr<Werewolf>& attacker) const {
+    return false;
+}
+
+
 Werewolf::Werewolf(std::string hName, short int x, short int y) : Heroes(WEREWOLF, hName, x, y) {}
 
 Werewolf::Werewolf(std::istream & is) : Heroes(WEREWOLF ,is) {}
@@ -21,7 +34,15 @@ std::ostream & operator<<(std::ostream & os, Werewolf & wf)
     return os;
 }
 
-int Werewolf::accept(Visitor & visitor)
+int Werewolf::accept(const std::shared_ptr<Visitor>& attacker_visitor, const std::shared_ptr<Heroes>& attacker)
 {
-    return visitor.visit(*this);
+    std::shared_ptr<const Heroes> npc_const_ptr = shared_from_this();
+    std::shared_ptr<Heroes> npc_ptr = std::const_pointer_cast<Heroes>(npc_const_ptr);
+    std::shared_ptr<Werewolf> defender = std::dynamic_pointer_cast<Werewolf>(npc_ptr);
+
+    bool result = attacker_visitor->visit(defender);
+
+    attacker->fightNotify(defender, result);
+
+    return result;
 }
